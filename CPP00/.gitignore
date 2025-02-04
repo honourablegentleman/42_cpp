@@ -1,0 +1,8 @@
+*.out
+cmake-build-debug/
+CMakeLists.txt
+megaphone
+phonebook
+account
+obj/
+.idea

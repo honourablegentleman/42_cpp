@@ -1,0 +1,9 @@
+CMakeLists.txt
+*.out
+obj/
+cmake-build-debug/
+.idea/
+claptrap
+scavtrap
+fragtrap
+diamondtrap

@@ -1,0 +1,9 @@
+CMakeLists.txt
+cmake-build-debug
+obj/
+*.o
+*.a
+*.out
+animal
+materia
+.idea/
