@@ -142,7 +142,7 @@ void	ScalarConverter::printFloat()
 		std::cout << "float: " << static_cast<float>(c) << ".0f" << std::endl;
 	else if (this->type == INFF || this->type == ERROR)
 		std::cout << "float: impossible" << std::endl;
-	else if (this->type == INT)
+	else if (this->type == INT || f - i == 0)
 		std::cout << "float: " << f << ".0f" << std::endl;
 	else
 		std::cout << "float: " << f << "f" << std::endl;
@@ -158,7 +158,7 @@ void	ScalarConverter::printDouble()
 		std::cout << "double: " << static_cast<double>(c) << ".0" << std::endl;
 	else if (this->type == INFF || this->type == ERROR)
 		std::cout << "double: impossible" << std::endl;
-	else if (this->type == INT)
+	else if (this->type == INT || d - i == 0)
 		std::cout << "double: " << d << ".0" << std::endl;
 	else
 		std::cout << "double: " << d << std::endl;
