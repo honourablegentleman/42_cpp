@@ -27,6 +27,7 @@ all: $(NAME)
 
 clean:
 	@rm -rf $(OBJ_DIR)
+	@rm -f *_shrubbery
 	@echo "${RED}Deleted directory${RESET} $(OBJ_DIR) ${RED}containing${RESET} $(CFILES:.cpp=.o)"
 
 fclean: clean
