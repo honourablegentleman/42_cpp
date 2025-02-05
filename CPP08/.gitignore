@@ -4,3 +4,5 @@ cmake-build-debug/
 CMakeLists.txt
 obj/
 *.out
+easyfind
+span
