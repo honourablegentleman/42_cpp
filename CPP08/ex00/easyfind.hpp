@@ -1,35 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Array.hpp                                          :+:      :+:    :+:   */
+/*   easyfind.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jhoddy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/03 14:05:25 by jhoddy            #+#    #+#             */
-/*   Updated: 2025/02/03 14:05:38 by jhoddy           ###   ########.fr       */
+/*   Created: 2025/02/05 11:59:27 by jhoddy            #+#    #+#             */
+/*   Updated: 2025/02/05 11:59:42 by jhoddy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ARRAY_HPP
-#define ARRAY_HPP
+#ifndef EASYFIND_HPP
+#define EASYFIND_HPP
 
-#include <iostream>
-
-template <typename T>
-
-class Array
+class EasyFind
 {
-private:
-	T				*array;
-	unsigned int	the_size;
 public:
-	Array();
-	Array(unsigned int n);
-	Array(Array const &other);
-	~Array();
-	Array	&operator=(Array const &other);
-	T	&operator[](unsigned int index);
-	unsigned int	size() const;
+	EasyFind();
+	EasyFind(const EasyFind &cpy);
+	EasyFind	&operator=(const EasyFind &cpy);
+	~EasyFind();
 };
 
 #endif
