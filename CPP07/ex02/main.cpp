@@ -26,6 +26,7 @@ int main(int, char**)
         if (mirror[i] != numbers[i])
         {
             std::cerr << "didn't save the same value!!" << std::endl;
+			delete [] mirror;
             return 1;
         }
     }
@@ -50,6 +51,6 @@ int main(int, char**)
     {
         numbers[i] = rand();
     }
-    delete [] mirror;//
+    delete [] mirror;
     return 0;
 }

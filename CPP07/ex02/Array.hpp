@@ -44,12 +44,17 @@ public:
 			return *this;
 		delete[] array;
 		this->the_size = other.the_size;
-		this->array = new T[other.the_size];
-		for (unsigned int i = 0; i < other.the_size; i++)
-			this->array[i] = other.array[i];
+		if (other.array)
+		{
+			this->array = new T[other.the_size];
+			for (unsigned int i = 0; i < other.the_size; i++)
+				this->array[i] = other.array[i];
+		}
+		else
+			this->array = NULL;
 		return *this;
 	};
-	int	&operator[](unsigned int index) {
+	T	&operator[](unsigned int index) {
 		if (index >= this->the_size)
 			throw std::out_of_range("Index out of range");
 		return this->array[index];
