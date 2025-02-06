@@ -47,7 +47,7 @@ void	ShrubberyCreationForm::execute(const Bureaucrat &executor) const
 	file.open(name.c_str(), std::ios::out);
 	file << "                     .o00o                             .--.\n";
 	file << "                   o000000oo                          /.--.\\\n";
-	file << "                  00000000000o                  (ni)  |====|\n";
+	file << "                  00000000000o                 (Ni!)  |====|\n";
 	file << "                 00000000000000                       |`::`|\n";
 	file << "              oooooo  00000000  o88o              .-;`\\..../`;-.\n";
 	file << "           ooOOOOOOOoo  ```''  888888            /  |...::...|  \\\n";

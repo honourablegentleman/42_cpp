@@ -18,22 +18,37 @@
 
 int	main()
 {
-	AForm		*form = new ShrubberyCreationForm("home");
-	Bureaucrat	bureaucrat("Dave", 1);
-	bureaucrat.executeForm(*form);
-	bureaucrat.signForm(*form);
-	bureaucrat.executeForm(*form);
-	delete form;
-	AForm		*form2 = new RobotomyRequestForm("robot");
-	Bureaucrat	bureaucrat2("Phil", 1);
-	bureaucrat.executeForm(*form2);
-	bureaucrat.signForm(*form2);
-	bureaucrat.executeForm(*form2);
-	delete form2;
-	AForm		*form3 = new PresidentialPardonForm("sir");
-	Bureaucrat	bureaucrat3("Bob", 1);
-	bureaucrat.executeForm(*form3);
-	bureaucrat.signForm(*form3);
-	bureaucrat.executeForm(*form3);
-	delete form3;
+	{
+		std::cout << "Shrubbery form test:\n" << std::endl;
+		ShrubberyCreationForm	shrub_form("Shrubbery");
+		Bureaucrat				b1("King Arthur", 1);
+		b1.executeForm(shrub_form);
+		b1.signForm(shrub_form);
+		b1.executeForm(shrub_form);
+		Bureaucrat				b2("Sir Not-appearing-in-this-film", 140);
+		b2.executeForm(shrub_form);
+	}
+	{
+		std::cout << "-----------------------------" << std::endl;
+		std::cout << "Robot form test:\n" << std::endl;
+		RobotomyRequestForm		robot("Robot");
+		Bureaucrat				b3("Dr Eggman", 1);
+		b3.executeForm(robot);
+		b3.signForm(robot);
+		b3.executeForm(robot);
+		Bureaucrat				b4("Sonic", 100);
+		b4.executeForm(robot);
+	}
+	{
+		std::cout << "-----------------------------" << std::endl;
+		std::cout << "Pardon form test:\n" << std::endl;
+		PresidentialPardonForm	pardon("Pardon");
+		Bureaucrat				b5("Biden", 1);
+		b5.executeForm(pardon);
+		b5.signForm(pardon);
+		b5.executeForm(pardon);
+		Bureaucrat				b6("Reagan", 40);
+		b6.executeForm(pardon);
+	}
+	return (0);
 }

@@ -14,18 +14,18 @@
 
 int	main()
 {
+	std::cout << "Intern test:\n" << std::endl;
 	Intern	intern;
-	AForm	*form1 = intern.makeForm("shrubbery creation", "home");
-	AForm	*form2 = intern.makeForm("robotomy request", "robot");
-	AForm	*form3 = intern.makeForm("presidential pardon", "sir");
+	AForm	*form1 = intern.makeForm("shrubbery creation", "Shrubbery");
+	AForm	*form2 = intern.makeForm("robotomy request", "Robot");
+	AForm	*form3 = intern.makeForm("presidential pardon", "Pardon");
 	AForm	*form4 = intern.makeForm("true", "lord");
-	Bureaucrat	bureaucrat("Dave", 1);
-	bureaucrat.signForm(*form1);
-	bureaucrat.executeForm(*form1);
-	bureaucrat.signForm(*form2);
-	bureaucrat.executeForm(*form2);
-	bureaucrat.signForm(*form3);
-	bureaucrat.executeForm(*form3);
+	std::cout << std::endl;
+
+	std::cout << form1->getName() << std::endl;
+	std::cout << form2->getName() << std::endl;
+	std::cout << form3->getName() << std::endl;
+
 	delete form1;
 	delete form2;
 	delete form3;
