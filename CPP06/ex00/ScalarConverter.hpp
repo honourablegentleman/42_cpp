@@ -27,16 +27,16 @@
 #define DOUBLE 4
 #define INF 5
 #define IS_NAN 6
-#define INFF 7
 
 class ScalarConverter
 {
 private:
-	int		type;
-	int		i;
-	float	f;
-	double	d;
-	char	c;
+	std::string	input;
+	int			type;
+	int			i;
+	float		f;
+	double		d;
+	char		c;
 public:
 	ScalarConverter();
 	ScalarConverter(const ScalarConverter &src);

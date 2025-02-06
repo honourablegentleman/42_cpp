@@ -63,18 +63,17 @@ int	ScalarConverter::checkType(const std::string &str)
 			&& str.find('.') == str.rfind('.')
 			&& str.find('.') != std::string::npos)
 		return (DOUBLE);
-	else if (str == "nan")
+	else if (str == "nan" || str == "nanf" || str == "+nan" || str == "-nan" || str == "+nanf" || str == "-nanf")
 		return (IS_NAN);
-	else if (str == "-inf" || str == "+inf" || str == "inf")
+	else if (str == "-inf" || str == "+inf" || str == "inf" || str == "-inff" || str == "+inff" || str == "inff")
 		return (INF);
-	else if (str == "-inff" || str == "+inff" || str == "inff")
-		return (INFF);
 	else
 		return (ERROR);
 }
 
 void	ScalarConverter::convert(const std::string &str)
 {
+	this->input = str;
 	this->type = checkType(str);
 	if (this->type == CHAR)
 		convertChar(str);
@@ -110,7 +109,7 @@ void	ScalarConverter::convertFloat(const std::string &str)
 
 void	ScalarConverter::printChar()
 {
-	if (this->type == ERROR)
+	if (this->type == ERROR || this->type == IS_NAN)
 		std::cout << "char: impossible" << std::endl;
 	else if (c < 32 || c > 126)
 		std::cout << "char: Non displayable" << std::endl;
@@ -124,7 +123,7 @@ void	ScalarConverter::printChar()
 
 void	ScalarConverter::printInt()
 {
-	if (this->type == IS_NAN || this->type == INF || this->type == INFF || this->type == ERROR)
+	if (this->type == IS_NAN || this->type == INF || this->type == ERROR)
 		std::cout << "int: impossible" << std::endl;
 	else if (this->type == CHAR)
 		std::cout << "int: " << static_cast<int>(c) << std::endl;
@@ -135,14 +134,19 @@ void	ScalarConverter::printInt()
 void	ScalarConverter::printFloat()
 {
 	if (this->type == IS_NAN)
-		std::cout << "float: nanf" << std::endl;
+	{
+		if (this->input == "nan" || this->input == "nanf")
+			std::cout << "float: nanf" << std::endl;
+		else if (this->input[0] == '+')
+			std::cout << "float: +nanf" << std::endl;
+		else if (this->input[0] == '-')
+			std::cout << "float: -nanf" << std::endl;
+	}
 	else if (this->type == INF)
 		std::cout << "float: inff" << std::endl;
-	else if (this->type == CHAR)
-		std::cout << "float: " << static_cast<float>(c) << ".0f" << std::endl;
-	else if (this->type == INFF || this->type == ERROR)
+	else if (this->type == ERROR)
 		std::cout << "float: impossible" << std::endl;
-	else if (this->type == INT || f - i == 0)
+	else if (this->type == INT || f - i == 0 || this->type == CHAR)
 		std::cout << "float: " << f << ".0f" << std::endl;
 	else
 		std::cout << "float: " << f << "f" << std::endl;
@@ -151,14 +155,19 @@ void	ScalarConverter::printFloat()
 void	ScalarConverter::printDouble()
 {
 	if (this->type == IS_NAN)
-		std::cout << "double: nan" << std::endl;
+	{
+		if (this->input == "nan" || this->input == "nanf")
+			std::cout << "double: nan" << std::endl;
+		else if (this->input[0] == '+')
+			std::cout << "double: +nan" << std::endl;
+		else if (this->input[0] == '-')
+			std::cout << "double: -nan" << std::endl;
+	}
 	else if (this->type == INF)
 		std::cout << "double: inf" << std::endl;
-	else if (this->type == CHAR)
-		std::cout << "double: " << static_cast<double>(c) << ".0" << std::endl;
-	else if (this->type == INFF || this->type == ERROR)
+	else if (this->type == ERROR)
 		std::cout << "double: impossible" << std::endl;
-	else if (this->type == INT || d - i == 0)
+	else if (this->type == INT || d - i == 0 || this->type == CHAR)
 		std::cout << "double: " << d << ".0" << std::endl;
 	else
 		std::cout << "double: " << d << std::endl;

@@ -18,7 +18,7 @@ Serializer::Serializer()
 
 Serializer::Serializer(const Serializer &src)
 {
-	(void)src;
+	*this = src;
 }
 
 Serializer::~Serializer()
