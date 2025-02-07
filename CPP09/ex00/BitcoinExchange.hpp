@@ -14,6 +14,8 @@
 #define BITCOINEXCHANGE_HPP
 
 #include <iostream>
+#include <fstream>
+#include <exception>
 
 class BitcoinExchange
 {
@@ -22,6 +24,12 @@ public:
 	BitcoinExchange(const BitcoinExchange &cpy);
 	BitcoinExchange	&operator=(const BitcoinExchange &cpy);
 	~BitcoinExchange();
+	void	execute(char **argv);
+	class	CouldNotOpenFile : public std::exception
+	{
+	public:
+		const char	*what() const throw();
+	};
 };
 
 #endif
