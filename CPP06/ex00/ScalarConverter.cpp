@@ -63,9 +63,9 @@ int	ScalarConverter::checkType(const std::string &str)
 			&& str.find('.') == str.rfind('.')
 			&& str.find('.') != std::string::npos)
 		return (DOUBLE);
-	else if (str == "nan" || str == "nanf" || str == "+nan" || str == "-nan" || str == "+nanf" || str == "-nanf")
+	else if (str == "nan" || str == "nanf")
 		return (IS_NAN);
-	else if (str == "-inf" || str == "+inf" || str == "inf" || str == "-inff" || str == "+inff" || str == "inff")
+	else if (str == "-inf" || str == "+inf" || str == "-inff" || str == "+inff")
 		return (INF);
 	else
 		return (ERROR);
@@ -134,43 +134,45 @@ void	ScalarConverter::printInt()
 void	ScalarConverter::printFloat()
 {
 	if (this->type == IS_NAN)
-	{
-		if (this->input == "nan" || this->input == "nanf")
-			std::cout << "float: nanf" << std::endl;
-		else if (this->input[0] == '+')
-			std::cout << "float: +nanf" << std::endl;
-		else if (this->input[0] == '-')
-			std::cout << "float: -nanf" << std::endl;
-	}
+		std::cout << "float: nanf" << std::endl;
 	else if (this->type == INF)
-		std::cout << "float: inff" << std::endl;
+	{
+		if (this->input[0] == '+')
+			std::cout << "float: +inff" << std::endl;
+		else
+			std::cout << "float: -inff" << std::endl;
+	}
 	else if (this->type == ERROR)
 		std::cout << "float: impossible" << std::endl;
-	else if (this->type == INT || f - i == 0 || this->type == CHAR)
-		std::cout << "float: " << f << ".0f" << std::endl;
 	else
-		std::cout << "float: " << f << "f" << std::endl;
+	{
+		std::cout << "float: " << f;
+		if (f - i == 0)
+			std::cout << ".0";
+		std::cout << "f" << std::endl;
+	}
 }
 
 void	ScalarConverter::printDouble()
 {
 	if (this->type == IS_NAN)
-	{
-		if (this->input == "nan" || this->input == "nanf")
-			std::cout << "double: nan" << std::endl;
-		else if (this->input[0] == '+')
-			std::cout << "double: +nan" << std::endl;
-		else if (this->input[0] == '-')
-			std::cout << "double: -nan" << std::endl;
-	}
+		std::cout << "double: nan" << std::endl;
 	else if (this->type == INF)
-		std::cout << "double: inf" << std::endl;
+	{
+		if (this->input[0] == '+')
+			std::cout << "double: +inf" << std::endl;
+		else
+			std::cout << "double: -inf" << std::endl;
+	}
 	else if (this->type == ERROR)
 		std::cout << "double: impossible" << std::endl;
-	else if (this->type == INT || d - i == 0 || this->type == CHAR)
-		std::cout << "double: " << d << ".0" << std::endl;
 	else
-		std::cout << "double: " << d << std::endl;
+	{
+		std::cout << "double: " << d;
+		if (d - i == 0 || d < std::numeric_limits<int>::min() || d > std::numeric_limits<int>::max())
+			std::cout << ".0";
+		std::cout << std::endl;
+	}
 }
 
 int	ScalarConverter::getType() const
