@@ -39,7 +39,7 @@ int	checkType(const std::string &str)
 	else if (str.find_first_not_of("+-0123456789") == std::string::npos
 			&& (str.find_last_of("+-") == 0 || str.find_last_of("+-") == std::string::npos)
 			&& str.length() < 11
-			&& std::atol(str.c_str()) <= MIN_INT
+			&& std::atol(str.c_str()) <= MAX_INT
 			&& std::atol(str.c_str()) >= MIN_INT)
 		return (INT);
 	else if (str.find_first_not_of("+-0123456789.f") == std::string::npos
