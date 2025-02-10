@@ -20,6 +20,13 @@
 #include <cmath>
 #include <limits>
 
+#define MAX_INT std::numeric_limits<int>::max()
+#define MIN_INT std::numeric_limits<int>::min()
+#define MAX_FLOAT std::numeric_limits<float>::max()
+#define MIN_FLOAT std::numeric_limits<float>::min()
+#define MAX_DOUBLE std::numeric_limits<double>::max()
+#define MIN_DOUBLE std::numeric_limits<double>::min()
+
 #define ERROR 0
 #define CHAR 1
 #define INT 2
@@ -31,31 +38,19 @@
 class ScalarConverter
 {
 private:
-	std::string	input;
-	int			type;
-	int			i;
-	float		f;
-	double		d;
-	char		c;
-public:
 	ScalarConverter();
 	ScalarConverter(const ScalarConverter &src);
-	~ScalarConverter();
 	ScalarConverter &operator=(const ScalarConverter &src);
-	void	convert(const std::string &str);
-	int		checkType(const std::string &str);
-	void	convertChar(const std::string &str);
-	void	convertInt(const std::string &str);
-	void	convertFloat(const std::string &str);
-	void	printChar();
-	void	printInt();
-	void	printFloat();
-	void	printDouble();
-	int		getType() const;
-	int		getInt() const;
-	float	getFloat() const;
-	double	getDouble() const;
-	char	getChar() const;
+public:
+	~ScalarConverter();
+	static void	convert(const std::string &str);
 };
+
+int		checkType(const std::string &str);
+void	printChar(const std::string &str);
+void	printInt(const std::string &str);
+void	printFloat(const std::string &str);
+void	printDouble(const std::string &str);
+void	printSpecial(const std::string &str, int type);
 
 #endif

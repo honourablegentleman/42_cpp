@@ -19,11 +19,6 @@ int main(int argc, char **argv)
 		std::cerr << "Error: wrong number of arguments" << std::endl;
 		return (1);
 	}
-	ScalarConverter sc;
-	sc.convert(argv[1]);
-	sc.printChar();
-	sc.printInt();
-	sc.printFloat();
-	sc.printDouble();
+	ScalarConverter::convert(argv[1]);
 	return (0);
 }

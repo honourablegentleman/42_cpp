@@ -18,11 +18,7 @@ ScalarConverter::ScalarConverter()
 
 ScalarConverter::ScalarConverter(const ScalarConverter &src)
 {
-	this->type = src.type;
-	this->i = src.i;
-	this->f = src.f;
-	this->d = src.d;
-	this->c = src.c;
+	*this = src;
 }
 
 ScalarConverter::~ScalarConverter()
@@ -33,23 +29,18 @@ ScalarConverter	&ScalarConverter::operator=(const ScalarConverter &src)
 {
 	if (this == &src)
 		return (*this);
-	this->type = src.type;
-	this->i = src.i;
-	this->f = src.f;
-	this->d = src.d;
-	this->c = src.c;
 	return (*this);
 }
 
-int	ScalarConverter::checkType(const std::string &str)
+int	checkType(const std::string &str)
 {
 	if (str.length() == 1 && !std::isdigit(str[0]))
 		return (CHAR);
 	else if (str.find_first_not_of("+-0123456789") == std::string::npos
 			&& (str.find_last_of("+-") == 0 || str.find_last_of("+-") == std::string::npos)
 			&& str.length() < 11
-			&& std::atol(str.c_str()) <= std::numeric_limits<int>::max()
-			&& std::atol(str.c_str()) >= std::numeric_limits<int>::min())
+			&& std::atol(str.c_str()) <= MIN_INT
+			&& std::atol(str.c_str()) >= MIN_INT)
 		return (INT);
 	else if (str.find_first_not_of("+-0123456789.f") == std::string::npos
 			&& str.find('f') == str.rfind('f')
@@ -73,129 +64,107 @@ int	ScalarConverter::checkType(const std::string &str)
 
 void	ScalarConverter::convert(const std::string &str)
 {
-	this->input = str;
-	this->type = checkType(str);
-	if (this->type == CHAR)
-		convertChar(str);
-	else if (this->type == INT)
-		convertInt(str);
-	else if (this->type == FLOAT || this->type == DOUBLE)
-		convertFloat(str);
-}
+	int	type = checkType(str);
 
-void	ScalarConverter::convertChar(const std::string &str)
-{
-	this->c = str[0];
-	this->i = static_cast<int>(c);
-	this->f = static_cast<float>(c);
-	this->d = static_cast<double>(c);
-}
-
-void	ScalarConverter::convertInt(const std::string &str)
-{
-	this->i = static_cast<int>(std::atoi(str.c_str()));
-	this->c = static_cast<char>(i);
-	this->f = static_cast<float>(i);
-	this->d = static_cast<double>(i);
-}
-
-void	ScalarConverter::convertFloat(const std::string &str)
-{
-	this->f = static_cast<float>(std::atof(str.c_str()));
-	this->i = static_cast<int>(f);
-	this->d = static_cast<double>(f);
-	this->c = static_cast<char>(f);
-}
-
-void	ScalarConverter::printChar()
-{
-	if (this->type == ERROR || this->type == IS_NAN)
-		std::cout << "char: impossible" << std::endl;
-	else if (c < 32 || c > 126)
-		std::cout << "char: Non displayable" << std::endl;
-	else if ((this->type == INT || this->type == FLOAT || this->type == DOUBLE) && (this->i >= 32 && this->i <= 127))
-		std::cout << "char: '" << static_cast<char>(i) << "'" << std::endl;
-	else if (this->type == CHAR)
-		std::cout << "char: '" << c << "'" << std::endl;
+	if (type == CHAR)
+		printChar(str);
+	else if (type == INT)
+		printInt(str);
+	else if (type == FLOAT)
+		printFloat(str);
+	else if (type == DOUBLE)
+		printDouble(str);
 	else
-		std::cout << "char: impossible" << std::endl;
+		printSpecial(str, type);
 }
 
-void	ScalarConverter::printInt()
+void	printSpecial(const std::string &str, int type)
 {
-	if (this->type == IS_NAN || this->type == INF || this->type == ERROR)
-		std::cout << "int: impossible" << std::endl;
-	else if (this->type == CHAR)
-		std::cout << "int: " << static_cast<int>(c) << std::endl;
-	else
-		std::cout << "int: " << i << std::endl;
-}
-
-void	ScalarConverter::printFloat()
-{
-	if (this->type == IS_NAN)
-		std::cout << "float: nanf" << std::endl;
-	else if (this->type == INF)
+	std::cout << "char: impossible" << std::endl;
+	std::cout << "int: impossible" << std::endl;
+	if (type == ERROR)
 	{
-		if (this->input[0] == '+')
-			std::cout << "float: +inff" << std::endl;
-		else
-			std::cout << "float: -inff" << std::endl;
-	}
-	else if (this->type == ERROR)
 		std::cout << "float: impossible" << std::endl;
-	else
-	{
-		std::cout << "float: " << f;
-		if (f - i == 0)
-			std::cout << ".0";
-		std::cout << "f" << std::endl;
-	}
-}
-
-void	ScalarConverter::printDouble()
-{
-	if (this->type == IS_NAN)
-		std::cout << "double: nan" << std::endl;
-	else if (this->type == INF)
-	{
-		if (this->input[0] == '+')
-			std::cout << "double: +inf" << std::endl;
-		else
-			std::cout << "double: -inf" << std::endl;
-	}
-	else if (this->type == ERROR)
 		std::cout << "double: impossible" << std::endl;
+	}
+	else if (type == IS_NAN)
+	{
+		std::cout << "float: nanf" << std::endl;
+		std::cout << "double: nan" << std::endl;
+	}
 	else
 	{
-		std::cout << "double: " << d;
-		if (d - i == 0 || d < std::numeric_limits<int>::min() || d > std::numeric_limits<int>::max())
-			std::cout << ".0";
-		std::cout << std::endl;
+		if (str[0] == '+')
+		{
+			std::cout << "float: +inff" << std::endl;
+			std::cout << "double: +inf" << std::endl;
+		}
+		else
+		{
+			std::cout << "float: -inff" << std::endl;
+			std::cout << "double: -inf" << std::endl;
+		}
 	}
 }
 
-int	ScalarConverter::getType() const
+void	printChar(const std::string &str)
 {
-	return (this->type);
+	char	c = str[0];
+
+	std::cout << "char: '" << c << "'" << std::endl;
+	std::cout << "int: " << static_cast<int>(c) << std::endl;
+	std::cout << "float: " << static_cast<float>(c) << ".0f" << std::endl;
+	std::cout << "double: " << static_cast<double>(c) << ".0" << std::endl;
 }
 
-int	ScalarConverter::getInt() const
+void	printInt(const std::string &str)
 {
-	return (this->i);
+	int	i = static_cast<long>(std::atol(str.c_str()));
+
+	std::cout << "char: ";
+	if (i >= 32 && i <= 126)
+		std::cout << static_cast<char>(i) << std::endl;
+	else
+		std::cout << "Non displayable" << std::endl;
+	std::cout << "int: " << i << std::endl;
+	std::cout << "float: " << static_cast<float>(i) << ".0f" << std::endl;
+	std::cout << "double: " << static_cast<double>(i) << ".0" << std::endl;
 }
 
-float	ScalarConverter::getFloat() const
+void	printFloat(const std::string &str)
 {
-	return (this->f);
+	float	f = std::atof(str.c_str());
+
+	if (f >= 32 && f <= 126)
+		std::cout << "char: " << static_cast<char>(f) << std::endl;
+	else
+		std::cout << "char: Non displayable" << std::endl;
+	std::cout << "int: " << static_cast<int>(f) << std::endl;
+	std::cout << "float: " << f;
+	if (f - static_cast<int>(f) == 0)
+		std::cout << ".0";
+	std::cout << "f" << std::endl;
+	std::cout << "double: " << static_cast<double>(f);
+	if (f - static_cast<int>(f) == 0)
+		std::cout << ".0";
+	std::cout << std::endl;
 }
 
-double	ScalarConverter::getDouble() const
+void printDouble(const std::string &str)
 {
-	return (this->d);
-}
+	double	d = std::atof(str.c_str());
 
-char	ScalarConverter::getChar() const
-{
-	return (this->c);
+	if (std::isprint(d))
+		std::cout << "char: " << static_cast<char>(d) << std::endl;
+	else
+		std::cout << "char: Non displayable" << std::endl;
+	std::cout << "int: " << static_cast<int>(d) << std::endl;
+	std::cout << "float: " << static_cast<float>(d);
+	if (d - static_cast<int>(d) == 0)
+		std::cout << ".0";
+	std::cout << "f" << std::endl;
+	std::cout << "double: " << d;
+	if (d - static_cast<int>(d) == 0)
+		std::cout << ".0";
+	std::cout << std::endl;
 }
