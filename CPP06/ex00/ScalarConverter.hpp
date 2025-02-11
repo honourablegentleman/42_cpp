@@ -15,17 +15,14 @@
 
 #include <iostream>
 #include <string>
+#include <iomanip>
 #include <cctype>
 #include <cstdlib>
 #include <cmath>
 #include <limits>
 
-#define MAX_INT std::numeric_limits<int>::max()
-#define MIN_INT std::numeric_limits<int>::min()
-#define MAX_FLOAT std::numeric_limits<float>::max()
-#define MIN_FLOAT std::numeric_limits<float>::min()
-#define MAX_DOUBLE std::numeric_limits<double>::max()
-#define MIN_DOUBLE std::numeric_limits<double>::min()
+#define MAXINT std::numeric_limits<int>::max()
+#define MININT std::numeric_limits<int>::min()
 
 #define ERROR 0
 #define CHAR 1

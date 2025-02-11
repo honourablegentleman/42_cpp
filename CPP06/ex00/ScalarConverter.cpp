@@ -32,36 +32,6 @@ ScalarConverter	&ScalarConverter::operator=(const ScalarConverter &src)
 	return (*this);
 }
 
-int	checkType(const std::string &str)
-{
-	if (str.length() == 1 && !std::isdigit(str[0]))
-		return (CHAR);
-	else if (str.find_first_not_of("+-0123456789") == std::string::npos
-			&& (str.find_last_of("+-") == 0 || str.find_last_of("+-") == std::string::npos)
-			&& str.length() < 11
-			&& std::atol(str.c_str()) <= MAX_INT
-			&& std::atol(str.c_str()) >= MIN_INT)
-		return (INT);
-	else if (str.find_first_not_of("+-0123456789.f") == std::string::npos
-			&& str.find('f') == str.rfind('f')
-			&& (str.find_last_of("+-") == 0 || str.find_last_of("+-") == std::string::npos)
-			&& str.find('.') != std::string::npos
-			&& str.find('.') == str.rfind('.'))
-		return (FLOAT);
-	else if (str.find_first_not_of("+-0123456789.e") == std::string::npos
-			&& str.find('e') == str.find_first_of('e')
-			&& (str.find_last_of("+-") == 0 || str.find_last_of("+-") == std::string::npos)
-			&& str.find('.') == str.rfind('.')
-			&& str.find('.') != std::string::npos)
-		return (DOUBLE);
-	else if (str == "nan" || str == "nanf")
-		return (IS_NAN);
-	else if (str == "-inf" || str == "+inf" || str == "-inff" || str == "+inff")
-		return (INF);
-	else
-		return (ERROR);
-}
-
 void	ScalarConverter::convert(const std::string &str)
 {
 	int	type = checkType(str);
@@ -76,6 +46,36 @@ void	ScalarConverter::convert(const std::string &str)
 		printDouble(str);
 	else
 		printSpecial(str, type);
+}
+
+int	checkType(const std::string &str)
+{
+	if (str.length() == 1 && !std::isdigit(str[0]))
+		return (CHAR);
+	else if (str.find_first_not_of("+-0123456789") == std::string::npos
+			&& (str.find_last_of("+-") == 0 || str.find_last_of("+-") == std::string::npos)
+			&& str.length() < 11
+			&& std::atol(str.c_str()) <= MAXINT && std::atol(str.c_str()) >= MININT)
+		return (INT);
+	else if (str.find_first_not_of("+-0123456789.f") == std::string::npos
+			&& (str.find_last_of("+-") == std::string::npos || str.find_last_of("+-") == 0)
+			&& (str.find('.') != std::string::npos && str.find('.') == str.rfind('.'))
+			&& (str.find('.') != 0 && str.rfind('.') != 0)
+			&& std::atol(str.c_str()) <= MAXINT && std::atol(str.c_str()) >= MININT)
+	{
+		if (str.find('f') == std::string::npos)
+			return (DOUBLE);
+		else if (str.rfind('f') == str.length() - 1)
+			return (FLOAT);
+		else
+			return (ERROR);
+	}
+	else if (str == "nan" || str == "nanf")
+		return (IS_NAN);
+	else if (str == "-inf" || str == "+inf" || str == "-inff" || str == "+inff")
+		return (INF);
+	else
+		return (ERROR);
 }
 
 void	printSpecial(const std::string &str, int type)
@@ -150,21 +150,22 @@ void	printFloat(const std::string &str)
 	std::cout << std::endl;
 }
 
-void printDouble(const std::string &str)
+void	printDouble(const std::string &str)
 {
 	double	d = std::atof(str.c_str());
+	int		prec = str.length() - str.find('.') - 1;
 
-	if (std::isprint(d))
+	if (d >= 32 && d <= 126)
 		std::cout << "char: " << static_cast<char>(d) << std::endl;
 	else
 		std::cout << "char: Non displayable" << std::endl;
 	std::cout << "int: " << static_cast<int>(d) << std::endl;
-	std::cout << "float: " << static_cast<float>(d);
-	if (d - static_cast<int>(d) == 0)
-		std::cout << ".0";
-	std::cout << "f" << std::endl;
-	std::cout << "double: " << d;
-	if (d - static_cast<int>(d) == 0)
-		std::cout << ".0";
-	std::cout << std::endl;
+	if (static_cast<float>(d) == static_cast<int>(d))
+		std::cout << "float: " << static_cast<float>(d) << ".0f" << std::endl;
+	else
+		std::cout << "float: " << std::fixed << std::setprecision(prec) << static_cast<float>(d) << "f" << std::endl;
+	if (d == static_cast<int>(d))
+		std::cout << "double: " << d << ".0" << std::endl;
+	else
+		std::cout << "double: " << std::fixed << std::setprecision(prec) << d << std::endl;
 }
