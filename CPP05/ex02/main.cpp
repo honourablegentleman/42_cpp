@@ -47,7 +47,7 @@ int	main()
 		b5.executeForm(pardon);
 		b5.signForm(pardon);
 		b5.executeForm(pardon);
-		Bureaucrat				b6("Reagan", 40);
+		Bureaucrat				b6("Obamna", 40);
 		b6.executeForm(pardon);
 	}
 	return (0);
