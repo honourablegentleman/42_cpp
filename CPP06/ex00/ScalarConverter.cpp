@@ -123,9 +123,11 @@ void	printInt(const std::string &str)
 
 	std::cout << "char: ";
 	if (i >= 32 && i <= 126)
-		std::cout << static_cast<char>(i) << std::endl;
-	else
+		std::cout << "'" << static_cast<char>(i) << "'" << std::endl;
+	else if (i >= 0 && i <= 127)
 		std::cout << "Non displayable" << std::endl;
+	else
+		std::cout << "impossible" << std::endl;
 	std::cout << "int: " << i << std::endl;
 	std::cout << "float: " << static_cast<float>(i) << ".0f" << std::endl;
 	std::cout << "double: " << static_cast<double>(i) << ".0" << std::endl;
@@ -136,16 +138,18 @@ void	printFloat(const std::string &str)
 	float	f = std::atof(str.c_str());
 
 	if (f >= 32 && f <= 126)
-		std::cout << "char: " << static_cast<char>(f) << std::endl;
-	else
+		std::cout << "char: " << "'" << static_cast<char>(f) << "'" << std::endl;
+	else if (f >= 0 && f <= 127)
 		std::cout << "char: Non displayable" << std::endl;
+	else
+		std::cout << "char: impossible" << std::endl;
 	std::cout << "int: " << static_cast<int>(f) << std::endl;
 	std::cout << "float: " << f;
-	if (f - static_cast<int>(f) == 0)
+	if (f == static_cast<int>(f))
 		std::cout << ".0";
 	std::cout << "f" << std::endl;
 	std::cout << "double: " << static_cast<double>(f);
-	if (f - static_cast<int>(f) == 0)
+	if (static_cast<double>(f) == static_cast<int>(f))
 		std::cout << ".0";
 	std::cout << std::endl;
 }
@@ -156,9 +160,11 @@ void	printDouble(const std::string &str)
 	int		prec = str.length() - str.find('.') - 1;
 
 	if (d >= 32 && d <= 126)
-		std::cout << "char: " << static_cast<char>(d) << std::endl;
-	else
+		std::cout << "char: " << "'" << static_cast<char>(d) << "'" << std::endl;
+	else if (d >= 0 && d <= 127)
 		std::cout << "char: Non displayable" << std::endl;
+	else
+		std::cout << "char: impossible" << std::endl;
 	std::cout << "int: " << static_cast<int>(d) << std::endl;
 	if (static_cast<float>(d) == static_cast<int>(d))
 		std::cout << "float: " << static_cast<float>(d) << ".0f" << std::endl;
