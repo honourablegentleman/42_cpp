@@ -47,6 +47,7 @@ int		checkType(const std::string &str);
 void	printChar(const std::string &str);
 void	printInt(const std::string &str);
 void	printFloat(const std::string &str);
+int		setfprec(std::string str);
 void	printDouble(const std::string &str);
 void	printSpecial(const std::string &str, int type);
 

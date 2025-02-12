@@ -154,10 +154,25 @@ void	printFloat(const std::string &str)
 	std::cout << std::endl;
 }
 
+int	setfprec(std::string str)
+{
+	int	prec = str.length() - 1 - str.find('.');
+	int	i = (prec < 4) ? prec : 4;
+	int	stop = str.find('.') + 1;
+
+	while (i > stop && str[i] == '0' && str[i] == '9')
+		i--;
+	if (i == stop)
+		return (1);
+	else
+		return (i - stop);
+}
+
 void	printDouble(const std::string &str)
 {
 	double	d = std::atof(str.c_str());
 	int		prec = str.length() - str.find('.') - 1;
+	int		fprec = setfprec(str);
 
 	if (d >= 32 && d <= 126)
 		std::cout << "char: " << "'" << static_cast<char>(d) << "'" << std::endl;
@@ -166,10 +181,13 @@ void	printDouble(const std::string &str)
 	else
 		std::cout << "char: impossible" << std::endl;
 	std::cout << "int: " << static_cast<int>(d) << std::endl;
+	std::cout << "float: ";
 	if (static_cast<float>(d) == static_cast<int>(d))
-		std::cout << "float: " << static_cast<float>(d) << ".0f" << std::endl;
+		std::cout << static_cast<float>(d) << ".0f" << std::endl;
+	else if (prec > 4)
+		std::cout << std::fixed << std::setprecision(fprec) << static_cast<float>(d) << "f" << std::endl;
 	else
-		std::cout << "float: " << std::fixed << std::setprecision(prec) << static_cast<float>(d) << "f" << std::endl;
+		std::cout << static_cast<float>(d) << "f" << std::endl;
 	if (d == static_cast<int>(d))
 		std::cout << "double: " << d << ".0" << std::endl;
 	else
