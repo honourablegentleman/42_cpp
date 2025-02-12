@@ -13,22 +13,29 @@
 #include <iostream>
 #include "iter.hpp"
 
-int	foo(int const &i)
+void	to_negative(int &i)
 {
+	if (i > 0)
+		i *= -1;
 	std::cout << i << " ";
-	return 0;
 }
 
-float bar(float const &i)
+void	times_two(float &i)
 {
+	i *= 2;
 	std::cout << i << " ";
-	return 0;
 }
 
-char	foobar(char const &i)
+void	to_upper(char &i)
+{
+	i = std::toupper(i);
+	std::cout << i << " ";
+}
+
+template <typename E>
+void	print_array(E &i)
 {
 	std::cout << i << " ";
-	return 0;
 }
 
 int	main()
@@ -37,16 +44,22 @@ int	main()
 	float	floatArray[5] = {1.1, 2.2, 3.3, 4.4, 5.5};
 	char	charArray[5] = {'a', 'b', 'c', 'd', 'e'};
 
-	std::cout << "intArray: ";
-	iter(intArray, 5, foo);
+	std::cout << "intArray: " << std::endl;
+	iter(intArray, 5, print_array);
+	std::cout << std::endl;
+	iter(intArray, 5, to_negative);
 	std::cout << std::endl;
 
-	std::cout << "floatArray: ";
-	iter(floatArray, 5, bar);
+	std::cout << "floatArray: " << std::endl;
+	iter(floatArray, 5, print_array);
+	std::cout << std::endl;
+	iter(floatArray, 5, times_two);
 	std::cout << std::endl;
 
-	std::cout << "charArray: ";
-	iter(charArray, 5, foobar);
+	std::cout << "charArray: " << std::endl;
+	iter(charArray, 5, print_array);
+	std::cout << std::endl;
+	iter(charArray, 5, to_upper);
 	std::cout << std::endl;
 
 	return 0;
