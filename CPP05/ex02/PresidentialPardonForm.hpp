@@ -17,13 +17,14 @@
 
 class PresidentialPardonForm : public AForm
 {
+private:
+	virtual void	activateForm(Bureaucrat const &executor) const;
 public:
 	PresidentialPardonForm();
 	PresidentialPardonForm(std::string const &target);
 	PresidentialPardonForm(PresidentialPardonForm const &presidentialPardonForm);
 	~PresidentialPardonForm();
 	PresidentialPardonForm &operator=(PresidentialPardonForm const &presidentialPardonForm);
-	virtual void	execute(Bureaucrat const &executor) const;
 };
 
 #endif

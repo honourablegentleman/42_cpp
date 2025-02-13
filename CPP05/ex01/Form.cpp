@@ -19,9 +19,9 @@ Form::Form() : name("default"), sign(false), gradeToSign(150), gradeToExecute(15
 Form::Form(std::string const &name, int gradeToSign, int gradeToExecute) : name(name), sign(false), gradeToSign(gradeToSign), gradeToExecute(gradeToExecute)
 {
 	if (gradeToSign < 1 || gradeToExecute < 1)
-		throw GradeTooLowException();
-	else if (gradeToSign > 150 || gradeToExecute > 150)
 		throw GradeTooHighException();
+	else if (gradeToSign > 150 || gradeToExecute > 150)
+		throw GradeTooLowException();
 }
 
 Form::Form(Form const &form) : name(form.name), sign(form.sign), gradeToSign(form.gradeToSign), gradeToExecute(form.gradeToExecute)
@@ -84,6 +84,6 @@ std::ostream &operator<<(std::ostream &out, Form const &form)
 		out << "signed";
 	else
 		out << "not signed";
-	out << " and requires grade " << form.getGradeToSign() << " to sign and grade " << form.getGradeToExecute() << " to execute";
+	out << " and requires grade " << form.getGradeToSign() << " to sign and grade " << form.getGradeToExecute() << " to activateForm";
 	return out;
 }

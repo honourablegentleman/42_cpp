@@ -63,7 +63,7 @@ int	main()
 		std::cout << "-----------------------------" << std::endl;
 		std::cout << "Sign test:\n" << std::endl;
 		Form		f4("Form4", 100, 90);
-		Form		f5(f4);
+		Form		f5("Form5", 100, 90);
 
 		Bureaucrat	b1;
 		std::cout << b1 << std::endl;

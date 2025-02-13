@@ -36,12 +36,8 @@ ShrubberyCreationForm	&ShrubberyCreationForm::operator=(ShrubberyCreationForm co
 	return *this;
 }
 
-void	ShrubberyCreationForm::execute(const Bureaucrat &executor) const
+void	ShrubberyCreationForm::activateForm(const Bureaucrat &executor) const
 {
-	if (executor.getGrade() > this->getGradeToExecute())
-		throw AForm::GradeTooLowException();
-	else if (!this->getSign())
-		throw AForm::FormNotSignedException();
 	std::ofstream	file;
 	std::string	name = executor.getName() + "_shrubbery";
 	file.open(name.c_str(), std::ios::out);

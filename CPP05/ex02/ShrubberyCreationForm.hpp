@@ -18,13 +18,14 @@
 
 class ShrubberyCreationForm : public AForm
 {
+private:
+	virtual void	activateForm(const Bureaucrat &executor) const;
 public:
 	ShrubberyCreationForm();
 	ShrubberyCreationForm(std::string const &target);
 	ShrubberyCreationForm(ShrubberyCreationForm const &shrubberyCreationForm);
 	~ShrubberyCreationForm();
 	ShrubberyCreationForm &operator=(ShrubberyCreationForm const &shrubberyCreationForm);
-	virtual void	execute(Bureaucrat const &executor) const;
 };
 
 #endif
