@@ -98,6 +98,6 @@ std::ostream &operator<<(std::ostream &out, AForm const &form)
 		out << "signed";
 	else
 		out << "not signed";
-	out << " and requires grade " << form.getGradeToSign() << " to sign and grade " << form.getGradeToExecute() << " to activateForm";
+	out << " and requires grade " << form.getGradeToSign() << " to sign and grade " << form.getGradeToExecute() << " to execute";
 	return out;
 }
