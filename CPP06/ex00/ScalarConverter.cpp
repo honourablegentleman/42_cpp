@@ -136,6 +136,7 @@ void	printInt(const std::string &str)
 void	printFloat(const std::string &str)
 {
 	float	f = std::atof(str.c_str());
+	int		prec = str.length() - str.find('.') - 2;
 
 	if (f >= 32 && f <= 126)
 		std::cout << "char: " << "'" << static_cast<char>(f) << "'" << std::endl;
@@ -144,13 +145,23 @@ void	printFloat(const std::string &str)
 	else
 		std::cout << "char: impossible" << std::endl;
 	std::cout << "int: " << static_cast<int>(f) << std::endl;
-	std::cout << "float: " << f;
-	if (f == static_cast<int>(f))
-		std::cout << ".0";
+	if (prec == 5)
+		std::cout << "float: " << std::fixed << std::setprecision(5) << f;
+	else
+	{
+		std::cout << "float: " << f;
+		if (f == static_cast<int>(f))
+			std::cout << ".0";
+	}
 	std::cout << "f" << std::endl;
-	std::cout << "double: " << static_cast<double>(f);
-	if (static_cast<double>(f) == static_cast<int>(f))
-		std::cout << ".0";
+	if (prec == 5)
+		std::cout << "double: " << std::fixed << std::setprecision(5) << static_cast<double>(f);
+	else
+	{
+		std::cout << "double: " << static_cast<double>(f);
+		if (static_cast<double>(f) == static_cast<int>(f))
+			std::cout << ".0";
+	}
 	std::cout << std::endl;
 }
 
