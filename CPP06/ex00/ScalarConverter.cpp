@@ -139,7 +139,7 @@ void	printFloat(const std::string &str)
 	int		prec = str.length() - str.find('.') - 2;
 
 	if (f >= 32 && f <= 126)
-		std::cout << "char: " << "'" << static_cast<char>(f) << "'" << std::endl;
+		std::cout << "char: '" << static_cast<char>(f) << "'" << std::endl;
 	else if (f >= 0 && f <= 127)
 		std::cout << "char: Non displayable" << std::endl;
 	else
@@ -199,8 +199,13 @@ void	printDouble(const std::string &str)
 		std::cout << std::fixed << std::setprecision(fprec) << static_cast<float>(d) << "f" << std::endl;
 	else
 		std::cout << static_cast<float>(d) << "f" << std::endl;
+	std::cout << "double: ";
 	if (d == static_cast<int>(d))
-		std::cout << "double: " << d << ".0" << std::endl;
+		std::cout <<  d << ".0" << std::endl;
+	else if (prec > 4 && prec < 14)
+		std::cout <<  std::fixed << std::setprecision(prec) << d << std::endl;
+	else if (prec > 14)
+		std::cout << std::fixed << std::setprecision(14) << d << std::endl;
 	else
-		std::cout << "double: " << std::fixed << std::setprecision(prec) << d << std::endl;
+		std::cout << d << std::endl;
 }
