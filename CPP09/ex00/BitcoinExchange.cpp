@@ -14,7 +14,7 @@
 
 BitcoinExchange::BitcoinExchange()
 {
-	std::ifstream	datafile;
+	std::ifstream	datafile("data.csv");
 	if (!datafile.is_open())
 		throw CouldNotOpenFile();
 	std::string	line;
@@ -23,14 +23,13 @@ BitcoinExchange::BitcoinExchange()
 		throw InvalidFormat();
 	std::string	date;
 	std::string	exch_rate;
-	std::istringstream	ss;
 	while (std::getline(datafile, line))
 	{
-		ss(line);
+		std::istringstream	ss(line);
 		std::getline(ss, date, ',');
 		std::getline(ss, exch_rate);
-		double	rate = std::atof(exch_rate);
-		this->data.push_back(std::make_pair(date, rate));
+		float	rate = std::atof(exch_rate.c_str());
+		this->data[date] = rate;
 	}
 	datafile.close();
 }
@@ -42,8 +41,7 @@ BitcoinExchange::BitcoinExchange(const BitcoinExchange &cpy)
 
 BitcoinExchange	&BitcoinExchange::operator=(const BitcoinExchange &cpy)
 {
-	if (*this != cpy)
-		*this = cpy;
+	this->data = cpy.data;
 	return (*this);
 }
 
@@ -62,11 +60,24 @@ void	BitcoinExchange::execute(char **argv)
 		throw InvalidFormat();
 	std::string			date;
 	std::string			value;
-	std::istringstream	ss;
 	while (std::getline(in, line))
 	{
 		if (checkFormat(line))
 			continue ;
+		std::istringstream	ss(line);
+		std::getline(ss, date, '|');
+		date.erase(date.length() - 1);
+		std::getline(ss, value);
+		float	rate = std::atof(value.c_str());
+		std::map<std::string, float>::iterator	it = this->data.find(date);
+		if (it != this->data.end())
+			std::cout << date << " => " << rate << " = " << rate * it->second << std::endl;
+		else
+		{
+			it = this->data.lower_bound(date);
+			it--;
+			std::cout << date << " => " << rate << " = " << rate * it->second << std::endl;
+		}
 	}
 	in.close();
 }
@@ -79,7 +90,7 @@ int	BitcoinExchange::checkFormat(std::string &line)
 		std::cerr << "Error: bad input => " << line << std::endl;
 		return (1);
 	}
-	long	value = std::atol(line + 11);
+	long	value = std::atol(line.c_str() + 12);
 	if (value > std::numeric_limits<int>::max())
 	{
 		std::cerr << "Error: too large a number." << std::endl;

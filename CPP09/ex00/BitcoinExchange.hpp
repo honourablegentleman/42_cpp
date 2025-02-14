@@ -16,8 +16,9 @@
 #include <iostream>
 #include <fstream>
 #include <map>
-#include <vector>
-#include <utility>
+#include <sstream>
+#include <cmath>
+#include <cstdlib>
 #include <fstream>
 #include <exception>
 #include <limits>
@@ -25,7 +26,7 @@
 class BitcoinExchange
 {
 private:
-	std::vector<std::pair<std::string, double>>	data;
+	std::map<std::string, float>	data;
 public:
 	BitcoinExchange();
 	BitcoinExchange(const BitcoinExchange &cpy);
