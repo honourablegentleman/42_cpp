@@ -15,17 +15,30 @@
 
 #include <iostream>
 #include <fstream>
+#include <map>
+#include <vector>
+#include <utility>
+#include <fstream>
 #include <exception>
+#include <limits>
 
 class BitcoinExchange
 {
+private:
+	std::vector<std::pair<std::string, double>>	data;
 public:
 	BitcoinExchange();
 	BitcoinExchange(const BitcoinExchange &cpy);
 	BitcoinExchange	&operator=(const BitcoinExchange &cpy);
 	~BitcoinExchange();
 	void	execute(char **argv);
+	int		checkFormat(std::string &line);
 	class	CouldNotOpenFile : public std::exception
+	{
+	public:
+		const char	*what() const throw();
+	};
+	class	InvalidFormat : public std::exception
 	{
 	public:
 		const char	*what() const throw();

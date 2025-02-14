@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fstream>
-#include <string>
 #include "BitcoinExchange.hpp"
 
 int main(int argc, char **argv)
@@ -22,8 +20,8 @@ int main(int argc, char **argv)
 		return (1);
 	}
 
-	BitcoinExchange b;
 	try {
+		BitcoinExchange b;
 		b.execute(argv);
 	}
 	catch (std::exception &e) {

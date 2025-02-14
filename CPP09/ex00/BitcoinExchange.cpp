@@ -14,6 +14,25 @@
 
 BitcoinExchange::BitcoinExchange()
 {
+	std::ifstream	datafile;
+	if (!datafile.is_open())
+		throw CouldNotOpenFile();
+	std::string	line;
+	std::getline(datafile, line);
+	if (line != "date,exchange_rate")
+		throw InvalidFormat();
+	std::string	date;
+	std::string	exch_rate;
+	std::istringstream	ss;
+	while (std::getline(datafile, line))
+	{
+		ss(line);
+		std::getline(ss, date, ',');
+		std::getline(ss, exch_rate);
+		double	rate = std::atof(exch_rate);
+		this->data.push_back(std::make_pair(date, rate));
+	}
+	datafile.close();
 }
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &cpy)
@@ -23,7 +42,8 @@ BitcoinExchange::BitcoinExchange(const BitcoinExchange &cpy)
 
 BitcoinExchange	&BitcoinExchange::operator=(const BitcoinExchange &cpy)
 {
-	(void)cpy;
+	if (*this != cpy)
+		*this = cpy;
 	return (*this);
 }
 
@@ -36,17 +56,49 @@ void	BitcoinExchange::execute(char **argv)
 	std::ifstream	in(argv[1]);
 	if (!in.is_open())
 		throw CouldNotOpenFile();
-	std::ifstream	data("data.csv");
-	if (!data.is_open())
+	std::string	line;
+	std::getline(in, line);
+	if (line != "date | value")
+		throw InvalidFormat();
+	std::string			date;
+	std::string			value;
+	std::istringstream	ss;
+	while (std::getline(in, line))
 	{
-		in.close();
-		throw CouldNotOpenFile();
+		if (checkFormat(line))
+			continue ;
 	}
 	in.close();
-	data.close();
+}
+
+int	BitcoinExchange::checkFormat(std::string &line)
+{
+	std::istringstream	ss(line);
+	if (line.find('|') != 11)
+	{
+		std::cerr << "Error: bad input => " << line << std::endl;
+		return (1);
+	}
+	long	value = std::atol(line + 11);
+	if (value > std::numeric_limits<int>::max())
+	{
+		std::cerr << "Error: too large a number." << std::endl;
+		return (1);
+	}
+	else if (value < 0)
+	{
+		std::cerr << "Error: not a positive number." << std::endl;
+		return (1);
+	}
+	return (0);
 }
 
 const char	*BitcoinExchange::CouldNotOpenFile::what() const throw()
 {
 	return "could not open file.";
+}
+
+const char	*BitcoinExchange::InvalidFormat::what() const throw()
+{
+	return "invalid Format.";
 }
