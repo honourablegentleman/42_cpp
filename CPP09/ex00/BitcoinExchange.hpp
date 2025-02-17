@@ -17,9 +17,7 @@
 #include <fstream>
 #include <map>
 #include <sstream>
-#include <cmath>
 #include <cstdlib>
-#include <fstream>
 #include <exception>
 #include <limits>
 
@@ -34,13 +32,12 @@ public:
 	~BitcoinExchange();
 	void	execute(char **argv);
 	int		checkFormat(std::string &line);
-	class	CouldNotOpenFile : public std::exception
-	{
+	int		checkDate(std::string &date);
+	class	CouldNotOpenFile : public std::exception {
 	public:
 		const char	*what() const throw();
 	};
-	class	InvalidFormat : public std::exception
-	{
+	class	InvalidFormat : public std::exception {
 	public:
 		const char	*what() const throw();
 	};

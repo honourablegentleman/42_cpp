@@ -82,22 +82,56 @@ void	BitcoinExchange::execute(char **argv)
 	in.close();
 }
 
+int	BitcoinExchange::checkDate(std::string &date)
+{
+	if (date.length() != 11)
+		return (1);
+	int	i = 0;
+	while (i < 4) {
+		if (!std::isdigit(date[i]))
+			return (1);
+		i++;
+	}
+	if (date[i] != '-')
+		return (1);
+	i++;
+	while (i < 7) {
+		if (!std::isdigit(date[i]))
+			return (1);
+		i++;
+	}
+	if (date[i] != '-')
+		return (1);
+	i++;
+	while (i < 10) {
+		if (!std::isdigit(date[i]))
+			return (1);
+		i++;
+	}
+	if (date[i] != ' ')
+		return (1);
+	return (0);
+}
+
 int	BitcoinExchange::checkFormat(std::string &line)
 {
 	std::istringstream	ss(line);
-	if (line.find('|') != 11)
-	{
+	std::string	date;
+	std::string	value;
+
+	std::getline(ss, date, '|');
+	std::getline(ss, value);
+	if (line.find('|') != 11 || checkDate(date)) {
 		std::cerr << "Error: bad input => " << line << std::endl;
 		return (1);
 	}
-	long	value = std::atol(line.c_str() + 12);
-	if (value > std::numeric_limits<int>::max())
-	{
+	long	rate = std::atol(line.c_str() + 12);
+	if (rate > std::numeric_limits<int>::max()
+		|| (line.find('.') != std::string::npos && line.length() - line.find('.') > 2)) {
 		std::cerr << "Error: too large a number." << std::endl;
 		return (1);
 	}
-	else if (value < 0)
-	{
+	else if (rate < 0) {
 		std::cerr << "Error: not a positive number." << std::endl;
 		return (1);
 	}
