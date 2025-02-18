@@ -35,6 +35,9 @@ RPN::~RPN()
 
 void	RPN::calculate(char sign)
 {
+	if (this->stack != 2)
+		throw ErrorMsg();
+
 	int	a = this->stack.top();
 	this->stack.pop();
 
@@ -52,6 +55,8 @@ void	RPN::calculate(char sign)
 			a *= b;
 			break ;
 		case '/':
+			if (a == 0)
+				throw ErrorMsg();
 			a = b / a;
 			break ;
 	}
