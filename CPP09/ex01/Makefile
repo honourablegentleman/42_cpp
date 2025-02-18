@@ -1,5 +1,5 @@
-NAME = btc
-CFILES = main.cpp BitcoinExchange.cpp
+NAME = RPN
+CFILES = main.cpp RPN.cpp
 OBJ_DIR = obj
 OFILES = $(addprefix $(OBJ_DIR)/,$(CFILES:.cpp=.o))
 CC = c++
