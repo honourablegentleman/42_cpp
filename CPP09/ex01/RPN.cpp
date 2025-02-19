@@ -71,7 +71,7 @@ void	RPN::execute(char **argv)
 	{
 		if (str[i] == ' ')
 			continue ;
-		if (str[i] >= '0' && str[i] <= '9' && (!str[i + 1] || str[i + 1] == ' '))
+		else if (str[i] >= '0' && str[i] <= '9' && (!str[i + 1] || str[i + 1] == ' '))
 			this->stack.push(str[i] - '0');
 		else if ((str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/') && (!str[i + 1] || str[i + 1] == ' '))
 			calculate(str[i]);
