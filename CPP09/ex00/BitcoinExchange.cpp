@@ -86,27 +86,23 @@ int	BitcoinExchange::checkDate(std::string &date)
 {
 	if (date.length() != 11)
 		return (1);
+
 	int	i = 0;
-	while (i < 4) {
+	for (; i < 4; i++) {
 		if (!std::isdigit(date[i]))
 			return (1);
-		i++;
 	}
-	if (date[i] != '-')
+	if (date[i++] != '-')
 		return (1);
-	i++;
-	while (i < 7) {
+	for (; i < 7; i++) {
 		if (!std::isdigit(date[i]))
 			return (1);
-		i++;
 	}
-	if (date[i] != '-')
+	if (date[i++] != '-')
 		return (1);
-	i++;
-	while (i < 10) {
+	for (; i < 10; i++) {
 		if (!std::isdigit(date[i]))
 			return (1);
-		i++;
 	}
 	if (date[i] != ' ')
 		return (1);

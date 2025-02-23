@@ -144,9 +144,11 @@ void	printFloat(const std::string &str)
 		std::cout << "char: Non displayable" << std::endl;
 	else
 		std::cout << "char: impossible" << std::endl;
+
 	std::cout << "int: " << static_cast<int>(f) << std::endl;
+
 	if (prec == 5)
-		std::cout << "float: " << std::fixed << std::setprecision(5) << f;
+		std::cout << "float: " << std::fixed << std::setprecision(prec) << f;
 	else
 	{
 		std::cout << "float: " << f;
@@ -154,8 +156,9 @@ void	printFloat(const std::string &str)
 			std::cout << ".0";
 	}
 	std::cout << "f" << std::endl;
+
 	if (prec == 5)
-		std::cout << "double: " << std::fixed << std::setprecision(5) << static_cast<double>(f);
+		std::cout << "double: " << std::fixed << std::setprecision(prec) << static_cast<double>(f);
 	else
 	{
 		std::cout << "double: " << static_cast<double>(f);
@@ -191,7 +194,9 @@ void	printDouble(const std::string &str)
 		std::cout << "char: Non displayable" << std::endl;
 	else
 		std::cout << "char: impossible" << std::endl;
+
 	std::cout << "int: " << static_cast<int>(d) << std::endl;
+
 	std::cout << "float: ";
 	if (static_cast<float>(d) == static_cast<int>(d))
 		std::cout << static_cast<float>(d) << ".0f" << std::endl;
@@ -199,6 +204,7 @@ void	printDouble(const std::string &str)
 		std::cout << std::fixed << std::setprecision(fprec) << static_cast<float>(d) << "f" << std::endl;
 	else
 		std::cout << static_cast<float>(d) << "f" << std::endl;
+
 	std::cout << "double: ";
 	if (d == static_cast<int>(d))
 		std::cout <<  d << ".0" << std::endl;

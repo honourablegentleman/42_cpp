@@ -18,8 +18,9 @@ int	main(int argc, char **argv)
 		std::cerr << "Error" << std::endl;
 		return (1);
 	}
-	RPN	rpn;
+
 	try {
+		RPN	rpn;
 		rpn.execute(argv);
 	}
 	catch (std::exception &e) {
