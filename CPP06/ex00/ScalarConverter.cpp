@@ -59,8 +59,8 @@ int	checkType(const std::string &str)
 		return (INT);
 	else if (str.find_first_not_of("+-0123456789.f") == std::string::npos
 			&& (str.find_last_of("+-") == std::string::npos || str.find_last_of("+-") == 0)
-			&& (str.find('.') != std::string::npos && str.find('.') == str.rfind('.'))
-			&& (str.find('.') != 0 && str.rfind('.') != 0)
+			&& ((str.find('.') != std::string::npos && str.find('.') == str.rfind('.')) || str.find('.') == std::string::npos)
+			&& str.find('.') != 0
 			&& std::atol(str.c_str()) <= MAXINT && std::atol(str.c_str()) >= MININT)
 	{
 		if (str.find('f') == std::string::npos)
@@ -172,7 +172,7 @@ int	setfprec(std::string str)
 {
 	int	prec = str.length() - 1 - str.find('.');
 	int	i = (prec < 4) ? prec : 4;
-	int	stop = str.find('.') + 1;
+	int	stop = str.find('.') + 2;
 
 	while (i > stop && str[i] == '0' && str[i] == '9')
 		i--;
