@@ -14,7 +14,6 @@
 
 RPN::RPN()
 {
-
 }
 
 RPN::RPN(const RPN &cpy)
@@ -24,18 +23,17 @@ RPN::RPN(const RPN &cpy)
 
 RPN	&RPN::operator=(const RPN &cpy)
 {
-	(void)cpy;
+	this->stack = cpy.stack;
 	return (*this);
 }
 
 RPN::~RPN()
 {
-
 }
 
 void	RPN::calculate(char sign)
 {
-	if (this->stack != 2)
+	if (this->stack.size() != 2)
 		throw ErrorMsg();
 
 	int	a = this->stack.top();
@@ -59,6 +57,8 @@ void	RPN::calculate(char sign)
 				throw ErrorMsg();
 			a = b / a;
 			break ;
+		default:
+			throw ErrorMsg();
 	}
 	this->stack.push(a);
 }
