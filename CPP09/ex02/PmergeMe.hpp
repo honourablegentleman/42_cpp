@@ -15,7 +15,11 @@
 
 #include <iostream>
 #include <exception>
+#include <cmath>
 #include <vector>
+#include <ctime>
+#include <cstdlib>
+#include <list>
 
 class PmergeMe {
 public:
@@ -25,6 +29,8 @@ public:
 	~PmergeMe();
 	void	execute(char **argv);
 	void	VectorInsert(char **argv);
+	void	merge(std::vector<int> &vec, int left, int mid, int right);
+	void	mergeSort(std::vector<int> &vec, int left, int right);
 	class	ErrorMsg : public std::exception {
 	public:
 		const char	*what() const throw();
