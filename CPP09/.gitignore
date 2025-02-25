@@ -1,6 +1,7 @@
 cmake-build-debug/
 CMakeLists.txt
 .idea/
+.vscode/
 obj/
 *.o
 *.out

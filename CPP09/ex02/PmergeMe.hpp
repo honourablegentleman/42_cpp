@@ -28,9 +28,12 @@ public:
 	PmergeMe	&operator=(const PmergeMe &cpy);
 	~PmergeMe();
 	void	execute(char **argv);
-	void	VectorInsert(char **argv);
-	void	merge(std::vector<int> &vec, int left, int mid, int right);
-	void	mergeSort(std::vector<int> &vec, int left, int right);
+	double	VectorInsert(std::vector<int> &vec, char **argv);
+	std::vector<int>	vectorMerge(std::vector<int> &left, std::vector<int> &right);
+	std::vector<int>	vectorMergeSort(std::vector<int> &vec);
+	double	ListInsert(std::list<int> &list, char **argv);
+	std::list<int>	listMerge(std::list<int> &left, std::list<int> &right);
+	std::list<int>	listMergeSort(std::list<int> &list);
 	class	ErrorMsg : public std::exception {
 	public:
 		const char	*what() const throw();

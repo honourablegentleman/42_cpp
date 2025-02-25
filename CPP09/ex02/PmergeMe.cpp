@@ -31,79 +31,136 @@ PmergeMe::~PmergeMe()
 {
 }
 
-void	PmergeMe::merge(std::vector<int> &vec, int left, int mid, int right)
+std::vector<int>	PmergeMe::vectorMerge(std::vector<int> &left, std::vector<int> &right)
 {
-	int	n1 = mid - left + 1;
-	int	n2 = right - mid;
+	std::vector<int>				res;
+	std::vector<int>::iterator	left_it = left.begin();
+	std::vector<int>::iterator	right_it = right.begin();
 
-	std::vector<int>	vec_a(n1);
-	std::vector<int>	vec_b(n2);
-	for(int i = 0; i < n1; i++)
-		vec_a[i] = vec[left + i];
-	for(int i = 0; i < n2; i++)
-		vec_b[i] = vec[mid + 1 + i];
-
-	int i = 0;
-	int	j = 0;
-	int	k = left;
-
-	while (i < n1 && j < n2) {
-		if (vec_a[i] <= vec_b[j])
-			vec[k] = vec_a[i++];
-		else
-			vec[k] = vec_b[j++];
-		k++;
+	while(left_it != left.end() && right_it != right.end()) {
+		if (*left_it <= *right_it) {
+			res.push_back(*left_it);
+			left_it++;
+		}
+		else {
+			res.push_back(*right_it);
+			right_it++;
+		}
 	}
-	while (i < n1)
-		vec[k++] = vec_a[i++];
-	while (j < n2)
-		vec[k++] = vec_b[j++];
+
+	res.insert(res.end(), left_it, left.end());
+	res.insert(res.end(), right_it, right.end());
+
+	return (res);
 }
 
-void	PmergeMe::mergeSort(std::vector<int> &vec, int left, int right)
+std::vector<int>	PmergeMe::vectorMergeSort(std::vector<int> &vec)
 {
-	if (left < right) {
-		int	mid = left + (right - left) / 2;
-		mergeSort(vec, left, mid);
-		mergeSort(vec, mid + 1, right);
-		merge(vec, left, mid, right);
-	}
+	if (vec.size() <= 1)
+		return (vec);
+
+	std::vector<int>::iterator	mid = vec.begin();
+	std::advance(mid, vec.size() / 2);
+
+	std::vector<int>	left(vec.begin(), mid);
+	std::vector<int>	right(mid, vec.end());
+
+	left = vectorMergeSort(left);
+	right = vectorMergeSort(right);
+
+	vec = vectorMerge(left, right);
+	return (vec);
 }
 
-void	PmergeMe::VectorInsert(char **argv)
+double	PmergeMe::VectorInsert(std::vector<int> &vec, char **argv)
 {
-	std::vector<int>	vec;
 	for (int i = 0; argv[i]; i++)
 		vec.push_back(atoi(argv[i]));
 
 	clock_t	start = clock();
-	mergeSort(vec, 0 , vec.size() - 1);
+	vectorMergeSort(vec);
 	clock_t	end = clock();
 
-	double	time = static_cast<double>(end - start) / 1000;
+	return (static_cast<double>(end - start) / 1000);
+}
+
+std::list<int>	PmergeMe::listMerge(std::list<int> &left, std::list<int> &right)
+{
+	std::list<int>				res;
+	std::list<int>::iterator	left_it = left.begin();
+	std::list<int>::iterator	right_it = right.begin();
+
+	while(left_it != left.end() && right_it != right.end()) {
+		if (*left_it <= *right_it) {
+			res.push_back(*left_it);
+			left_it++;
+		}
+		else {
+			res.push_back(*right_it);
+			right_it++;
+		}
+	}
+
+	res.insert(res.end(), left_it, left.end());
+	res.insert(res.end(), right_it, right.end());
+
+	return (res);
+}
+
+std::list<int>	PmergeMe::listMergeSort(std::list<int> &list)
+{
+	if (list.size() <= 1)
+		return (list);
+	std::list<int>	left;
+	std::list<int>	right;
+
+	std::list<int>::iterator	it = list.begin();
+	std::advance(it, list.size() / 2);
+
+	left.splice(left.begin(), list, list.begin(), it);
+	right.splice(right.begin(), list, list.begin(), list.end());
+
+	left = listMergeSort(left);
+	right = listMergeSort(right);
+	list = listMerge(left, right);
+
+	return (list);
+}
+
+double	PmergeMe::ListInsert(std::list<int> &list, char **argv)
+{
+	for (int i = 0; argv[i]; i++)
+		list.push_back(atoi(argv[i]));
+
+	clock_t	start = clock();
+	listMergeSort(list);
+	clock_t	end = clock();
+
+	return (static_cast<double>(end - start) / 1000);
+}
+
+void	PmergeMe::execute(char **argv)
+{
+	std::vector<int>	vec;
+	std::list<int>		list;
+
+	std::cout << "Before: ";
+	for (int i = 0; argv[i]; i++)
+		std::cout << argv[i] << " ";
+	std::cout << std::endl;
+	
+	double	time = VectorInsert(vec, argv);
 
 	std::cout << "After:  ";
 	for (std::vector<int>::size_type i = 0; i < vec.size(); i++)
 		std::cout << vec[i] << " ";
 	std::cout << std::endl;
+
 	std::cout << "Time to process a range of " << vec.size() << " elements with std::vector: " << time << " ms" << std::endl;
-}
 
-void	PmergeMe::ListInsert(char **argv)
-{
-	std::list<int>	list;
-	for (int i = 0; argv[i]; i++)
-		list.push_back(atoi(argv[i]));
-}
+	time = ListInsert(list, argv);
 
-void	PmergeMe::execute(char **argv)
-{
-	std::cout << "Before: ";
-	for (int i = 0; argv[i]; i++)
-		std::cout << argv[i] << " ";
-	std::cout << std::endl;
-	VectorInsert(argv);
-	ListInsert(argv);
+	std::cout << "Time to process a range of " << vec.size() << " elements with std::list: " << time << " ms" << std::endl;
 }
 
 const char	*PmergeMe::ErrorMsg::what() const throw()
