@@ -33,7 +33,7 @@ PmergeMe::~PmergeMe()
 
 std::vector<int>	PmergeMe::vectorMerge(std::vector<int> &left, std::vector<int> &right)
 {
-	std::vector<int>				res;
+	std::vector<int>			res;
 	std::vector<int>::iterator	left_it = left.begin();
 	std::vector<int>::iterator	right_it = right.begin();
 
@@ -139,10 +139,24 @@ double	PmergeMe::ListInsert(std::list<int> &list, char **argv)
 	return (static_cast<double>(end - start) / 1000);
 }
 
+int	PmergeMe::argCheck(char **argv)
+{
+	for (int i = 0; argv[i]; i++) {
+		for (int j = 0; argv[i][j]; j++) {
+			if (!std::isdigit(argv[i][j]))
+				return (1);
+		}
+	}
+	return (0);
+}
+
 void	PmergeMe::execute(char **argv)
 {
 	std::vector<int>	vec;
 	std::list<int>		list;
+
+	if (argCheck(argv))
+		throw ErrorMsg();
 
 	std::cout << "Before: ";
 	for (int i = 0; argv[i]; i++)
