@@ -31,45 +31,64 @@ PmergeMe::~PmergeMe()
 {
 }
 
-std::vector<int>	PmergeMe::vectorMerge(std::vector<int> &left, std::vector<int> &right)
+std::vector<int>	PmergeMe::generateJacobsthal(int n)
 {
-	std::vector<int>			res;
-	std::vector<int>::iterator	left_it = left.begin();
-	std::vector<int>::iterator	right_it = right.begin();
+	std::vector<int>	jacob;
+	if (n > 0)
+		jacob.push_back(0);
+	if (n > 1)
+		jacob.push_back(1);
 
-	while(left_it != left.end() && right_it != right.end()) {
-		if (*left_it <= *right_it) {
-			res.push_back(*left_it);
-			left_it++;
-		}
-		else {
-			res.push_back(*right_it);
-			right_it++;
-		}
+	for (int i = 2; i < n; i++) {
+		int	j = jacob[i - 1] + 2 * jacob[i - 2];
+		jacob.push_back(j);
 	}
+	return (jacob);
+}
 
-	res.insert(res.end(), left_it, left.end());
-	res.insert(res.end(), right_it, right.end());
+std::vector<std::pair<int, int> >	PmergeMe::vectorPair(std::vector<int> &vec)
+{
+	std::vector<std::pair<int, int> >	res;
+
+	for (size_t i = 0; i < vec.size() - 1; i += 2) {
+		if (vec[i] < vec[i + 1])
+			res.push_back(std::make_pair(vec[i], vec[i + 1]));
+		else
+			res.push_back(std::make_pair(vec[i + 1], vec[i]));
+	}
+	if (vec.size() % 2 != 0)
+		res.push_back(std::make_pair(vec.back(), -1));
 
 	return (res);
 }
 
 std::vector<int>	PmergeMe::vectorMergeSort(std::vector<int> &vec)
 {
-	if (vec.size() <= 1)
+	if (vec.size() < 2)
 		return (vec);
 
-	std::vector<int>::iterator	mid = vec.begin();
-	std::advance(mid, vec.size() / 2);
+	std::vector<std::pair<int, int> >	pair = vectorPair(vec);
 
-	std::vector<int>	left(vec.begin(), mid);
-	std::vector<int>	right(mid, vec.end());
+	std::vector<int>	main;
+	std::vector<int>	pend;
+	for (size_t i = 0; i < pair.size(); i++) {
+		main.push_back(pair[i].first);
+		if (pair[i].second != -1)
+			pend.push_back(pair[i].second);
+	}
 
-	left = vectorMergeSort(left);
-	right = vectorMergeSort(right);
+	main = vectorMergeSort(main);
 
-	vec = vectorMerge(left, right);
-	return (vec);
+	std::vector<int>	jacob = generateJacobsthal(pend.size());
+	for (size_t i = 0; i < pend.size(); i++) {
+		size_t	index = (i < jacob.size()) ? jacob[i] : i;
+		if (index < pend.size()) {
+			std::vector<int>::iterator	it = std::lower_bound(main.begin(), main.end(), pend[index]);
+			main.insert(it, pend[index]);
+		}
+	}
+
+	return (main);
 }
 
 double	PmergeMe::VectorInsert(std::vector<int> &vec, char **argv)
@@ -78,7 +97,7 @@ double	PmergeMe::VectorInsert(std::vector<int> &vec, char **argv)
 		vec.push_back(atoi(argv[i]));
 
 	clock_t	start = clock();
-	vectorMergeSort(vec);
+	vec = vectorMergeSort(vec);
 	clock_t	end = clock();
 
 	return (static_cast<double>(end - start) / 1000);
