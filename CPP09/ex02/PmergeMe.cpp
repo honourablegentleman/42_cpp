@@ -91,6 +91,7 @@ std::vector<int>	PmergeMe::vectorMergeSort(std::vector<int> &vec)
 	return (main);
 }
 
+
 double	PmergeMe::VectorInsert(std::vector<int> &vec, char **argv)
 {
 	for (int i = 0; argv[i]; i++)
