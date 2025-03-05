@@ -30,8 +30,10 @@ public:
 	void				execute(char **argv);
 	int					argCheck(char **argv);
 	double				VectorInsert(std::vector<int> &vec, char **argv);
-	std::vector<int>	vectorMerge(std::vector<int> &left, std::vector<int> &right);
-	std::vector<int>	vectorMergeSort(std::vector<int> &vec);
+	std::vector<int>	vectorMergeSort(std::vector<std::pair<int, int> > &pair);
+	std::vector<std::pair<int, int> >	sortPair(std::vector<std::pair<int, int> > &pair);
+	std::vector<int>	generateJacobsthal(int n);
+	std::vector<std::pair<int, int> >	pairAndSort(std::vector<int> &vec);
 	double				ListInsert(std::list<int> &list, char **argv);
 	std::list<int>		listMerge(std::list<int> &left, std::list<int> &right);
 	std::list<int>		listMergeSort(std::list<int> &list);

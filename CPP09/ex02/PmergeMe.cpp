@@ -31,45 +31,66 @@ PmergeMe::~PmergeMe()
 {
 }
 
-std::vector<int>	PmergeMe::vectorMerge(std::vector<int> &left, std::vector<int> &right)
+std::vector<int>	PmergeMe::generateJacobsthal(int n)
 {
-	std::vector<int>			res;
-	std::vector<int>::iterator	left_it = left.begin();
-	std::vector<int>::iterator	right_it = right.begin();
+	std::vector<int>	jacob;
 
-	while(left_it != left.end() && right_it != right.end()) {
-		if (*left_it <= *right_it) {
-			res.push_back(*left_it);
-			left_it++;
-		}
-		else {
-			res.push_back(*right_it);
-			right_it++;
-		}
-	}
-
-	res.insert(res.end(), left_it, left.end());
-	res.insert(res.end(), right_it, right.end());
-
-	return (res);
+	jacob.push_back(0);
+	jacob.push_back(1);
+	while (jacob.back() < n)
+		jacob.push_back(jacob[jacob.size() - 1] + 2 * jacob[jacob.size() - 2]);
+	return (jacob);
 }
 
-std::vector<int>	PmergeMe::vectorMergeSort(std::vector<int> &vec)
+std::vector<std::pair<int, int> >	PmergeMe::pairAndSort(std::vector<int> &vec)
 {
-	if (vec.size() <= 1)
-		return (vec);
+	std::vector<std::pair<int, int> >	pair;
 
-	std::vector<int>::iterator	mid = vec.begin();
-	std::advance(mid, vec.size() / 2);
+	for (size_t i = 0; i < vec.size() - 1; i += 2) {
+		if (vec[i] < vec[i + 1])
+			pair.push_back(std::make_pair(vec[i], vec[i + 1]));
+		else
+			pair.push_back(std::make_pair(vec[i + 1], vec[i]));
+	}
+	if (vec.size() % 2 != 0)
+		pair.push_back(std::make_pair(vec.back(), -1));
 
-	std::vector<int>	left(vec.begin(), mid);
-	std::vector<int>	right(mid, vec.end());
+	for (size_t i = 0; i < pair.size(); i++)
+		std::cout << pair[i].first << " " << pair[i].second << " | ";
+	std::cout << std::endl;
 
-	left = vectorMergeSort(left);
-	right = vectorMergeSort(right);
+	return (pair);
+}
 
-	vec = vectorMerge(left, right);
-	return (vec);
+std::vector<int>	PmergeMe::vectorMergeSort(std::vector<std::pair<int, int> > &pair)
+{
+	std::vector<int>	res;
+	if (pair.size() < 2) {
+		for (size_t i = 0; i < pair.size(); i++) {
+			res.push_back(pair[i].first);
+			if (pair[i].second != -1)
+				res.push_back(pair[i].second);
+		}
+		return (res);
+	}
+
+	std::vector<int>	pending;
+	for (size_t i = 0; i < pair.size(); i++) {
+		res.push_back(pair[i].first);
+		if (pair[i].second != -1)
+			pending.push_back(pair[i].second);
+	}
+
+	std::vector<std::pair<int, int> >	newPair = pairAndSort(pending);
+	res = vectorMergeSort(newPair);
+
+	/*std::vector<int>	jacob = generateJacobsthal(pending.size());
+	for (size_t i = 0; i < pending.size(); i++) {
+		int	pos = std::min(jacob[i], static_cast<int>(res.size()));
+		res.insert(res.begin() + pos, pending[i]);
+	}*/
+
+	return (res);
 }
 
 double	PmergeMe::VectorInsert(std::vector<int> &vec, char **argv)
@@ -78,7 +99,8 @@ double	PmergeMe::VectorInsert(std::vector<int> &vec, char **argv)
 		vec.push_back(atoi(argv[i]));
 
 	clock_t	start = clock();
-	vectorMergeSort(vec);
+	std::vector<std::pair<int, int> >	pair = pairAndSort(vec);
+	vec = vectorMergeSort(pair);
 	clock_t	end = clock();
 
 	return (static_cast<double>(end - start) / 1000);
@@ -162,7 +184,7 @@ void	PmergeMe::execute(char **argv)
 	for (int i = 0; argv[i]; i++)
 		std::cout << argv[i] << " ";
 	std::cout << std::endl;
-	
+
 	double	time = VectorInsert(vec, argv);
 
 	std::cout << "After:  ";
