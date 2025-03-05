@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <iostream>
+#include <vector>
 #include "whatever.hpp"
 
 int main()
@@ -30,6 +31,30 @@ int main()
 	std::cout << "c = " << c << ", d = " << d << std::endl;
 	std::cout << "min( c, d ) = " << ::min( c, d ) << std::endl;
 	std::cout << "max( c, d ) = " << ::max( c, d ) << std::endl;
+
+	std::vector<int>	e;
+	e.push_back(3);
+	e.push_back(4);
+	std::vector<int>	f;
+	f.push_back(7);
+	f.push_back(6);
+
+	::swap(e, f);
+	std::cout << "e = ";
+	for (size_t i = 0; i < e.size(); i++)
+		std::cout << e[i] << " ";
+	std::cout << ", f = ";
+	for (size_t i = 0; i < f.size(); i++)
+		std::cout << f[i]<< " ";
+	std::cout << std::endl;
+	std::cout << "min( e, f ) = ";
+	for (size_t i = 0; i < e.size(); i++)
+		std::cout << ::min( e, f )[i] << " ";
+	std::cout << std::endl;
+	std::cout << "max( e, f ) = ";
+	for (size_t i = 0; i < e.size(); i++)
+		std::cout << ::max( e, f )[i] << " ";
+	std::cout << std::endl;
 
 	return 0;
 }
