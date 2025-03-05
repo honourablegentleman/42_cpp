@@ -32,6 +32,13 @@ void	to_upper(char &i)
 	std::cout << i << " ";
 }
 
+void	str_to_upper(std::string &i)
+{
+	for (size_t j = 0; j < i.size(); j++)
+		i[j] = std::toupper(i[j]);
+	std::cout << i << " ";
+}
+
 template <typename E>
 void	print_array(E &i)
 {
@@ -43,6 +50,7 @@ int	main()
 	int		intArray[5] = {1, 2, 3, 4, 5};
 	float	floatArray[5] = {1.1, 2.2, 3.3, 4.4, 5.5};
 	char	charArray[5] = {'a', 'b', 'c', 'd', 'e'};
+	std::string	strArray[5] = {"this", "is", "very", "true", "yes"};
 
 	std::cout << "intArray: " << std::endl;
 	iter(intArray, 5, print_array);
@@ -60,6 +68,12 @@ int	main()
 	iter(charArray, 5, print_array);
 	std::cout << std::endl;
 	iter(charArray, 5, to_upper);
+	std::cout << std::endl;
+
+	std::cout << "strArray: " << std::endl;
+	iter<std::string>(strArray, 5, print_array);
+	std::cout << std::endl;
+	iter(strArray, 5, str_to_upper);
 	std::cout << std::endl;
 
 	return 0;
