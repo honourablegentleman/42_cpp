@@ -12,23 +12,50 @@
 
 #include "easyfind.hpp"
 #include <vector>
+#include <list>
 
 int main()
 {
-	std::vector<int> vec;
-	vec.push_back(1);
-	vec.push_back(2);
-	vec.push_back(3);
-	vec.push_back(4);
-	vec.push_back(5);
-	try
 	{
-		std::cout << easyfind(vec, 3) - vec.begin() << std::endl;
-		std::cout << easyfind(vec, 6) - vec.begin() << std::endl;
+		std::cout << "vector test:" << std::endl;
+		std::vector<int> vec;
+
+		for (int i = 0; i < 10; i++)
+			vec.push_back(i);
+		try {
+			std::cout << *easyfind(vec, 3) << std::endl;
+			std::cout << *easyfind(vec, 6) << std::endl;
+		}
+		catch (std::exception &e) {
+			std::cout << e.what() << std::endl;
+		}
+		try {
+			std::cout << *easyfind(vec, 15) << std::endl;
+		}
+		catch (std::exception &e) {
+			std::cout << e.what() << std::endl;
+		}
 	}
-	catch (std::exception &e)
 	{
-		std::cout << e.what() << std::endl;
+		std::cout << "-------------------------------------" << std::endl;
+		std::cout << "list test:" << std::endl;
+		std::list<int>	list;
+
+		for (int i = 0; i < 15; i++)
+			list.push_back(i);
+		try {
+			std::cout << *easyfind(list, 2) << std::endl;
+			std::cout << *easyfind(list, 11) << std::endl;
+		}
+		catch (std::exception &e) {
+			std::cout << e.what() << std::endl;
+		}
+		try {
+			std::cout << *easyfind(list, 20) << std::endl;
+		}
+		catch (std::exception &e) {
+			std::cout << e.what() << std::endl;
+		}
 	}
 	return (0);
 }
