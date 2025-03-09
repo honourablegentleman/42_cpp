@@ -31,7 +31,7 @@ public:
 	int					argCheck(char **argv);
 	std::vector<int>	generateJacobsthal(int n);
 	double				VectorInsert(std::vector<int> &vec, char **argv);
-	std::vector<int>	vectorMergeSort(std::vector<int> &vec);
+	void vectorMergeSort(std::vector<int> &vec, int lvl);
 	std::vector<std::pair<int, int> >	vectorPair(std::vector<int> &vec);
 	double				ListInsert(std::list<int> &list, char **argv);
 	std::list<int>		listMerge(std::list<int> &left, std::list<int> &right);

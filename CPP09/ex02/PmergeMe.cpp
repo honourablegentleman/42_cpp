@@ -34,15 +34,13 @@ PmergeMe::~PmergeMe()
 std::vector<int>	PmergeMe::generateJacobsthal(int n)
 {
 	std::vector<int>	jacob;
-	if (n > 0)
-		jacob.push_back(0);
-	if (n > 1)
-		jacob.push_back(1);
 
-	for (int i = 2; i < n; i++) {
-		int	j = jacob[i - 1] + 2 * jacob[i - 2];
-		jacob.push_back(j);
-	}
+	jacob.push_back(0);
+	jacob.push_back(1);
+
+	while (jacob.size() < n)
+		jacob.push_back(jacob[jacob.size() - 1] + 2 * jacob[jacob.size() - 2]);
+
 	return (jacob);
 }
 
@@ -62,22 +60,33 @@ std::vector<std::pair<int, int> >	PmergeMe::vectorPair(std::vector<int> &vec)
 	return (res);
 }
 
-std::vector<int>	PmergeMe::vectorMergeSort(std::vector<int> &vec)
+void	PmergeMe::vectorMergeSort(std::vector<int> &vec, int lvl)
 {
-	if (vec.size() < 2)
-		return (vec);
+	int	pairs = vec.size() / lvl;
+	if (pairs < 2)
+		return ;
 
-	std::vector<std::pair<int, int> >	pair = vectorPair(vec);
+	bool	odd = (pairs % 2 != 0);
 
-	std::vector<int>	main;
-	std::vector<int>	pend;
-	for (size_t i = 0; i < pair.size(); i++) {
-		main.push_back(pair[i].first);
-		if (pair[i].second != -1)
-			pend.push_back(pair[i].second);
+	std::vector<int>::iterator	start = vec.begin();
+	std::vector<int>::iterator	last = next(vec.begin(), lvl * pairs);
+	std::vector<int>::iterator	end = next(last, -(odd * lvl));
+
+	int	jump = 2 * lvl;
+	for (std::vector<int>::iterator it = start; it != end; std::advance(id, jump)) {
+		std::vector<int>::iterator	curr_pair = next(it, lvl - 1);
+		std::vector<int>::iterator	next_pair = next(it, lvl * 2 - 1);
+		if (next_pair < curr_pair) {
+			std::vector<int>::iterator	start = next(it, -lvl + 1);
+			std::vector<int>::iterator	end = next(start, lvl);
+			for (; start != end; start++)
+				std::iter_swap(start, next(start, lvl));
+		}
 	}
 
-	main = vectorMergeSort(main);
+	vectorMergeSort(vec, lvl * 2);
+
+	std::vector<std::vector<int>::iterator>	main;
 
 	std::vector<int>	jacob = generateJacobsthal(pend.size());
 	for (size_t i = 0; i < pend.size(); i++) {
@@ -91,14 +100,13 @@ std::vector<int>	PmergeMe::vectorMergeSort(std::vector<int> &vec)
 	return (main);
 }
 
-
 double	PmergeMe::VectorInsert(std::vector<int> &vec, char **argv)
 {
 	for (int i = 0; argv[i]; i++)
 		vec.push_back(atoi(argv[i]));
 
 	clock_t	start = clock();
-	vec = vectorMergeSort(vec);
+	vec = vectorMergeSort(vec, 0);
 	clock_t	end = clock();
 
 	return (static_cast<double>(end - start) / 1000);
@@ -182,7 +190,7 @@ void	PmergeMe::execute(char **argv)
 	for (int i = 0; argv[i]; i++)
 		std::cout << argv[i] << " ";
 	std::cout << std::endl;
-	
+
 	double	time = VectorInsert(vec, argv);
 
 	std::cout << "After:  ";
