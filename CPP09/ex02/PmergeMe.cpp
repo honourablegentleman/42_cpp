@@ -69,18 +69,18 @@ void	PmergeMe::vectorMergeSort(std::vector<int> &vec, int lvl)
 	bool	odd = (pairs % 2 != 0);
 
 	std::vector<int>::iterator	start = vec.begin();
-	std::vector<int>::iterator	last = next(vec.begin(), lvl * pairs);
-	std::vector<int>::iterator	end = next(last, -(odd * lvl));
+	std::vector<int>::iterator	last = vec.begin() + (lvl * pairs);
+	std::vector<int>::iterator	end = last - (odd * lvl);
 
 	int	jump = 2 * lvl;
-	for (std::vector<int>::iterator it = start; it != end; std::advance(id, jump)) {
-		std::vector<int>::iterator	curr_pair = next(it, lvl - 1);
-		std::vector<int>::iterator	next_pair = next(it, lvl * 2 - 1);
+	for (std::vector<int>::iterator it = start; it != end; std::advance(it, jump)) {
+		std::vector<int>::iterator	curr_pair = it + (lvl - 1);
+		std::vector<int>::iterator	next_pair = it + ((lvl * 2) - 1);
 		if (next_pair < curr_pair) {
-			std::vector<int>::iterator	start = next(it, -lvl + 1);
-			std::vector<int>::iterator	end = next(start, lvl);
+			std::vector<int>::iterator	start = it + (-lvl + 1);
+			std::vector<int>::iterator	end = start + lvl;
 			for (; start != end; start++)
-				std::iter_swap(start, next(start, lvl));
+				std::iter_swap(start, start + lvl);
 		}
 	}
 
