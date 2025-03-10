@@ -56,11 +56,8 @@ int	Span::shortestSpan()
 	std::vector<int>	tmp = this->value;
 	std::sort(tmp.begin(), tmp.end());
 	int	min = tmp[1] - tmp[0];
-	for (unsigned int i = 1; i < tmp.size() - 1; i++)
-	{
-		if (tmp[i + 1] - tmp[i] < min)
-			min = tmp[i + 1] - tmp[i];
-	}
+	for (size_t i = 1; i < tmp.size() - 1; i++)
+		min = std::min(min, tmp[i + 1] - tmp[i]);
 	return (min);
 }
 
@@ -71,8 +68,7 @@ int	Span::longestSpan()
 
 	std::vector<int>	tmp = this->value;
 	std::sort(tmp.begin(), tmp.end());
-	int	max = tmp[tmp.size() - 1] - tmp[0];
-	return (max);
+	return (tmp.back() - tmp.front());
 }
 
 void	Span::addRange(std::vector<int>::iterator begin, std::vector<int>::iterator end)
