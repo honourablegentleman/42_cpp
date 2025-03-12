@@ -31,17 +31,14 @@ PmergeMe::~PmergeMe()
 {
 }
 
-std::vector<int>	PmergeMe::generateJacobsthal(int n)
+int	PmergeMe::generateJacobsthal(int n)
 {
-	std::vector<int>	jacob;
+	if (n == 0)
+		return (0);
+	else if (n == 1)
+		return (1);
 
-	jacob.push_back(0);
-	jacob.push_back(1);
-
-	while (jacob.size() < static_cast<size_t>(n))
-		jacob.push_back(jacob[jacob.size() - 1] + 2 * jacob[jacob.size() - 2]);
-
-	return (jacob);
+	return (generateJacobsthal(n - 1) + 2 * generateJacobsthal(n - 2));
 }
 
 std::vector<std::pair<int, int> >	PmergeMe::vectorPair(std::vector<int> &vec)
@@ -60,51 +57,47 @@ std::vector<std::pair<int, int> >	PmergeMe::vectorPair(std::vector<int> &vec)
 	return (res);
 }
 
+// test:	11 2 17 0 16 8 6 15 10 3 21 1 18 9 14 19 12 5 4 20 13 7
+
 void	PmergeMe::vectorMergeSort(std::vector<int> &vec, int lvl)
 {
-	int	pairs = vec.size() / lvl;
+	int pairs = vec.size() / lvl;
 	if (pairs < 2)
-		return ;
+		return;
 
-	std::cout << "level: " << lvl << std::endl;
+	bool odd = (pairs % 2 != 0);
 
-	bool	odd = (pairs % 2 != 0);
-
-	std::vector<int>::iterator	start = vec.begin();
+	std::vector<int>::iterator start = vec.begin();
 //	std::vector<int>::iterator	last = vec.end();
-	std::vector<int>::iterator	end = vec.end() - (odd * lvl);
+	std::vector<int>::iterator end = vec.end() - (odd * lvl);
 
-	int	jump = 2 * lvl;
-	for (std::vector<int>::iterator it = start; it != end; std::advance(it, jump)) {
-		std::vector<int>::iterator	curr_pair = it + (lvl - 1);
-		std::vector<int>::iterator	next_pair = it + (jump - 1);
+	for (std::vector<int>::iterator it = start; it != end; std::advance(it, 2 * lvl)) {
+		if (std::distance(it, end) < 2 * lvl)
+			break;
+		std::vector<int>::iterator curr_pair = it + (lvl - 1);
+		std::vector<int>::iterator next_pair = it + ((2 * lvl) - 1);
 		if (curr_pair < vec.end() && next_pair < vec.end() && *next_pair < *curr_pair) {
-			std::vector<int>::iterator	i_start = curr_pair - (lvl - 1);
-			std::vector<int>::iterator	i_end = i_start + lvl;
-			std::cout << "curr: " << *i_start << std::endl;
-			std::cout << "next: " << *i_end << std::endl;
+			std::vector<int>::iterator i_start = curr_pair - (lvl - 1);
+			std::vector<int>::iterator i_end = i_start + lvl;
 			for (; i_start != i_end; i_start++)
 				std::iter_swap(i_start, i_start + lvl);
 		}
 	}
-	std::cout << "end" << std::endl;
-
-	for (size_t i = 0; i < vec.size(); i++)
-		std::cout << vec[i] << " ";
-	std::cout << std::endl;
 
 	vectorMergeSort(vec, lvl * 2);
 
-	/*std::vector<std::vector<int>::iterator>	main;
+	std::vector<std::vector<int>::iterator> main;
+	std::vector<std::vector<int>::iterator> pend;
 
-	std::vector<int>	jacob = generateJacobsthal(pend.size());
-	for (size_t i = 0; i < pend.size(); i++) {
-		size_t	index = (i < jacob.size()) ? jacob[i] : i;
-		if (index < pend.size()) {
-			std::vector<int>::iterator	it = std::lower_bound(main.begin(), main.end(), pend[index]);
-			main.insert(it, pend[index]);
-		}
-	}*/
+	main.push_back(start + (lvl - 1));
+	main.push_back(start + ((lvl * 2) - 1));
+
+	for (int i = 4; i <= pairs; i += 2) {
+		pend.push_back(start + (lvl * (i - 1) - 1));
+		main.push_back(start + (lvl * i - 1));
+	}
+	if (odd)
+		pend.push_back(end + (lvl - 1));
 }
 
 double	PmergeMe::VectorInsert(std::vector<int> &vec, char **argv)
@@ -201,8 +194,8 @@ void	PmergeMe::execute(char **argv)
 	double	time = VectorInsert(vec, argv);
 
 	std::cout << "After:  ";
-	for (std::vector<int>::size_type i = 0; i < vec.size(); i++)
-		std::cout << vec[i] << " ";
+	for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); it++)
+		std::cout << *it << " ";
 	std::cout << std::endl;
 
 	std::cout << "Time to process a range of " << vec.size() << " elements with std::vector: " << time << " ms" << std::endl;

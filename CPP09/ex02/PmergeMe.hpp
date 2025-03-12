@@ -27,15 +27,15 @@ public:
 	PmergeMe(const PmergeMe &cpy);
 	PmergeMe	&operator=(const PmergeMe &cpy);
 	~PmergeMe();
-	void				execute(char **argv);
-	int					argCheck(char **argv);
-	std::vector<int>	generateJacobsthal(int n);
-	double				VectorInsert(std::vector<int> &vec, char **argv);
-	void vectorMergeSort(std::vector<int> &vec, int lvl);
+	void			execute(char **argv);
+	int				argCheck(char **argv);
+	int				generateJacobsthal(int n);
+	double			VectorInsert(std::vector<int> &vec, char **argv);
+	void			vectorMergeSort(std::vector<int> &vec, int lvl);
 	std::vector<std::pair<int, int> >	vectorPair(std::vector<int> &vec);
-	double				ListInsert(std::list<int> &list, char **argv);
-	std::list<int>		listMerge(std::list<int> &left, std::list<int> &right);
-	std::list<int>		listMergeSort(std::list<int> &list);
+	double			ListInsert(std::list<int> &list, char **argv);
+	std::list<int>	listMerge(std::list<int> &left, std::list<int> &right);
+	std::list<int>	listMergeSort(std::list<int> &list);
 	class	ErrorMsg : public std::exception {
 	public:
 		const char	*what() const throw();
