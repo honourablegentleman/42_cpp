@@ -76,7 +76,8 @@ void	PmergeMe::vectorMergeSort(std::vector<int> &vec, int lvl)
 			break;
 		std::vector<int>::iterator curr_pair = it + (lvl - 1);
 		std::vector<int>::iterator next_pair = it + ((2 * lvl) - 1);
-		if (curr_pair < vec.end() && next_pair < vec.end() && *next_pair < *curr_pair) {
+		if (curr_pair < vec.end() && next_pair < vec.end() &&
+			*next_pair < *curr_pair) {
 			std::vector<int>::iterator i_start = curr_pair - (lvl - 1);
 			std::vector<int>::iterator i_end = i_start + lvl;
 			for (; i_start != i_end; i_start++)
@@ -86,8 +87,8 @@ void	PmergeMe::vectorMergeSort(std::vector<int> &vec, int lvl)
 
 	vectorMergeSort(vec, lvl * 2);
 
-	std::vector<std::vector<int>::iterator> main;
-	std::vector<std::vector<int>::iterator> pend;
+	std::vector <std::vector<int>::iterator> main;
+	std::vector <std::vector<int>::iterator> pend;
 
 	main.push_back(start + (lvl - 1));
 	main.push_back(start + ((lvl * 2) - 1));
@@ -98,6 +99,54 @@ void	PmergeMe::vectorMergeSort(std::vector<int> &vec, int lvl)
 	}
 	if (odd)
 		pend.push_back(end + (lvl - 1));
+
+	int prev = 1;
+	int num = 0;
+	for (int i = 2;; i++) {
+		int curr = generateJacobsthal(i);
+		int diff = curr - prev;
+		int offset = 0;
+		if (diff > static_cast<int>(pend.size()))
+			break;
+		int times = diff;
+		typename std::vector<std::vector<int>::iterator>::iterator pend_it = pend.begin() + diff - 1;
+		typename std::vector<std::vector<int>::iterator>::iterator bound_it = main.begin() + curr + num;
+		while (times) {
+			typename std::vector<std::vector<int>::iterator>::iterator index = std::upper_bound(main.begin(), bound_it, *pend_it);
+			typename std::vector<std::vector<int>::iterator>::iterator insert = main.insert(index, *pend_it);
+			times--;
+			pend_it = pend.erase(pend_it);
+			pend_it--;
+			offset += (insert - main.begin()) == curr + num;
+			bound_it = main.begin() + curr + num - offset;
+		}
+		prev = curr;
+		num += diff;
+		offset = 0;
+	}
+
+	for (size_t i = 0; i < pend.size(); i++) {
+		typename std::vector<std::vector<int>::iterator>::iterator curr_pend = pend.begin() + i;
+		typename std::vector<std::vector<int>::iterator>::iterator curr_bound = main.begin() + (main.size() - pend.size() + i + odd);
+		typename std::vector<std::vector<int>::iterator>::iterator index = std::upper_bound(main.begin(), curr_bound, *curr_pend);
+		main.insert(index, *curr_pend);
+	}
+
+	std::vector<int>	copy;
+	copy.reserve(vec.size());
+	for (typename std::vector<std::vector<int>::iterator>::iterator it = main.begin(); it != main.end(); it++) {
+		for (int i = 0; i < lvl; i++) {
+			std::vector<int>::iterator start = *it;
+			std::advance(start, -lvl + i + 1);
+			copy.insert(copy.end(), *start);
+		}
+	}
+
+	std::vector<int>::iterator		con_it = vec.begin();
+	for (std::vector<int>::iterator copy_it = copy.begin(); copy_it != copy.end(); copy_it++) {
+		*con_it = *copy_it;
+		con_it++;
+	}
 }
 
 double	PmergeMe::VectorInsert(std::vector<int> &vec, char **argv)

@@ -20,6 +20,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <list>
+#include <algorithm>
 
 class PmergeMe {
 public:
