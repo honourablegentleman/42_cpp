@@ -33,9 +33,6 @@ RPN::~RPN()
 
 void	RPN::calculate(char sign)
 {
-	if (this->stack.size() != 2)
-		throw ErrorMsg();
-
 	int	a = this->stack.top();
 	this->stack.pop();
 
@@ -67,8 +64,7 @@ void	RPN::execute(char **argv)
 {
 	char	*str = argv[1];
 
-	for (int i = 0; str[i]; i++)
-	{
+	for (int i = 0; str[i]; i++) {
 		if (str[i] == ' ')
 			continue ;
 		else if (str[i] >= '0' && str[i] <= '9' && (!str[i + 1] || str[i + 1] == ' '))

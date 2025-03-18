@@ -23,8 +23,7 @@ BitcoinExchange::BitcoinExchange()
 		throw InvalidFormat();
 	std::string	date;
 	std::string	exch_rate;
-	while (std::getline(datafile, line))
-	{
+	while (std::getline(datafile, line)) {
 		std::istringstream	ss(line);
 		std::getline(ss, date, ',');
 		std::getline(ss, exch_rate);
@@ -60,8 +59,7 @@ void	BitcoinExchange::execute(char **argv)
 		throw InvalidFormat();
 	std::string			date;
 	std::string			value;
-	while (std::getline(in, line))
-	{
+	while (std::getline(in, line)) {
 		if (checkFormat(line))
 			continue ;
 		std::istringstream	ss(line);
@@ -72,8 +70,7 @@ void	BitcoinExchange::execute(char **argv)
 		std::map<std::string, float>::iterator	it = this->data.find(date);
 		if (it != this->data.end())
 			std::cout << date << " => " << rate << " = " << rate * it->second << std::endl;
-		else
-		{
+		else {
 			it = this->data.lower_bound(date);
 			it--;
 			std::cout << date << " => " << rate << " = " << rate * it->second << std::endl;
@@ -122,8 +119,7 @@ int	BitcoinExchange::checkFormat(std::string &line)
 		return (1);
 	}
 	long	rate = std::atol(line.c_str() + 12);
-	if (rate > std::numeric_limits<int>::max()
-		|| (line.find('.') != std::string::npos && line.length() - line.find('.') > 2)) {
+	if (rate > std::numeric_limits<int>::max() || (line.find('.') != std::string::npos && line.length() - line.find('.') > 2)) {
 		std::cerr << "Error: too large a number." << std::endl;
 		return (1);
 	}
