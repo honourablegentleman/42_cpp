@@ -119,7 +119,7 @@ int	BitcoinExchange::checkFormat(std::string &line)
 		return (1);
 	}
 	long	rate = std::atol(line.c_str() + 12);
-	if (rate > std::numeric_limits<int>::max() || (line.find('.') != std::string::npos && line.length() - line.find('.') > 2)) {
+	if (rate > std::numeric_limits<int>::max()) {
 		std::cerr << "Error: too large a number." << std::endl;
 		return (1);
 	}
