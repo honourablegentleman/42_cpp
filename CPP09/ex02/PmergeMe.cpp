@@ -55,7 +55,8 @@ void	PmergeMe::execute(char **argv)
 		std::cout << argv[i] << " ";
 	std::cout << std::endl;
 
-	double	time = InsertAndSort(vec, argv);
+	std::vector<std::pair<int, int> >	vecpair;
+	double	time = FordJohnson(vec, vecpair, argv);
 
 	std::cout << "After:  ";
 	for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); it++)
@@ -64,7 +65,8 @@ void	PmergeMe::execute(char **argv)
 
 	std::cout << "Time to process a range of " << vec.size() << " elements with std::vector: " << time << " ms" << std::endl;
 
-	time = InsertAndSort(list, argv);
+	std::list<std::pair<int, int> >	listpair;
+	time = FordJohnson(list, listpair, argv);
 
 	std::cout << "Time to process a range of " << vec.size() << " elements with std::list: " << time << " ms" << std::endl;
 }
@@ -72,4 +74,9 @@ void	PmergeMe::execute(char **argv)
 const char	*PmergeMe::ErrorMsg::what() const throw()
 {
 	return "Error";
+}
+
+size_t	jacobsthal(size_t n)
+{
+	return ((pow(2, n + 1) + pow(-1, n)) / 3);
 }
