@@ -64,7 +64,6 @@ void	Merge(Pair &pair, Pair &left, Pair &right)
 		pair.push_back(*right_it);
 		right_it++;
 	}
-
 }
 
 template <typename Pair>
@@ -73,23 +72,14 @@ void	MergeSort(Pair &pair, int n)
 	if (n < 2)
 		return ;
 
-	int	leftmid = n / 2;
-	int	rightmid = n - leftmid;
-	Pair	left;
-	Pair	right;
+	typename Pair::iterator	mid = pair.begin();
+	std::advance(mid, n / 2);
 
-	typename Pair::iterator it = pair.begin();
-	for (int i = 0; i < leftmid; i++) {
-		left.push_back(*it);
-		it++;
-	}
-	for (int i = 0; i < rightmid; i++) {
-		right.push_back(*it);
-		it++;
-	}
+	Pair	left(pair.begin(), mid);
+	Pair	right(mid, pair.end());
 
-	MergeSort(left, leftmid);
-	MergeSort(right, rightmid);
+	MergeSort(left, left.size());
+	MergeSort(right, right.size());
 
 	Merge(pair, left, right);
 }
@@ -107,27 +97,6 @@ void	MakePair(Container &con, Pair &pair)
 		else
 			pair.push_back(std::make_pair(*it, *next));
 	}
-}
-
-template <typename Iterator>
-Iterator	BinarySearch(Iterator first, Iterator last, int value)
-{
-	Iterator	it;
-	int			count = std::distance(first, last);
-	int			step = 0;
-
-	while (count > 0) {
-		it = first;
-		step = count / 2;
-		std::advance(it, step);
-		if (value >= *it) {
-			first = ++it;
-			count -= step + 1;
-		}
-		else
-			count = step;
-	}
-	return (first);
 }
 
 template <typename Container>
@@ -150,7 +119,7 @@ void	BetweenJacobsthal(Container &res, Container low, Container high, int left, 
 		std::advance(low_it, right);
 		int low_val = *low_it;
 
-		res.insert(BinarySearch(left_it, right_it, low_val), low_val);
+		res.insert(std::lower_bound(left_it, right_it, low_val), low_val);
 		right--;
 	}
 }
@@ -170,7 +139,7 @@ void	Insertion(Container &con, Container low, Container high)
 	if (low.size() > high.size()) {
 		typename Container::iterator	con_it = --con.end();
 		typename Container::iterator	low_it = --low.end();
-		con.insert(BinarySearch(con.begin(), con_it, *low_it), *low_it);
+		con.insert(std::lower_bound(con.begin(), con_it, *low_it), *low_it);
 	}
 }
 
