@@ -81,7 +81,7 @@ void	BitcoinExchange::execute(char **argv)
 
 int	BitcoinExchange::checkDate(std::string &date)
 {
-	if (date.empty(), date.size() != 10 || date[4] != '-' || date[7] != '-')
+	if (date.empty() || date.size() != 10 || date[4] != '-' || date[7] != '-')
 		return (1);
 
 	for (int i = 0; i < 9; i++) {
