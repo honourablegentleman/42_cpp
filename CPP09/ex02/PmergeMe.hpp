@@ -137,9 +137,8 @@ void	Insertion(Container &con, Container low, Container high)
 	}
 	BetweenJacobsthal(con, low, high, jacobsthal(i) - 1, high.size() - 1);
 	if (low.size() > high.size()) {
-		typename Container::iterator	con_it = --con.end();
 		typename Container::iterator	low_it = --low.end();
-		con.insert(std::lower_bound(con.begin(), con_it, *low_it), *low_it);
+		con.insert(std::lower_bound(con.begin(), con.end(), *low_it), *low_it);
 	}
 }
 
