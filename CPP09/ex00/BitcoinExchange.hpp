@@ -33,6 +33,7 @@ public:
 	void	execute(char **argv);
 	int		checkFormat(std::string &line);
 	int		checkDate(std::string &date);
+	int		checkValue(std::string &value);
 	class	CouldNotOpenFile : public std::exception {
 	public:
 		const char	*what() const throw();
